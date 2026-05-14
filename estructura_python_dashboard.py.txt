@@ -1,0 +1,26 @@
+python-dashboard/
+├── app.py                 # Punto de entrada y Router principal
+├── dashboard.py           # Dashboard independiente (prototipo/legacy)
+├── auth/                  # Gestión de autenticación
+│   ├── auth_manager.py    # Lógica de login/logout y sesiones
+│   └── config.yaml        # Configuración de usuarios y cookies
+├── database/              # Capa de Persistencia
+│   ├── models.py          # Definición de tablas (SQLAlchemy)
+│   ├── session.py         # Configuración del motor y sesiones DB
+│   ├── crud.py            # Operaciones Base de Datos
+│   └── init_db.py         # Inicialización de datos semilla
+├── pages/                 # Vistas de la aplicación (Streamlit Pages)
+│   ├── 1_landing.py       # Página de bienvenida
+│   ├── 2_login.py         # Formulario de acceso
+│   └── 3_dashboard.py     # Panel de control principal
+├── components/            # Widgets y componentes UI reutilizables
+├── utils/                 # Funciones auxiliares y helpers
+├── data/                  # Procesamiento y limpieza de datos
+├── alembic/               # Migraciones de base de datos
+├── Dockerfile             # Configuración para contenedorización
+└── docker-compose.yaml    # Orquestación de servicios
+
+
+
+
+

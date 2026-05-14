@@ -1,0 +1,24 @@
+cookie:
+  expiry_days: 30
+  key: dcbaea14f8c64a3e8b1f2e3d4c5b6a7980fedcba1234567890abcdef12345678
+  name: dashboard_auth_cookie
+
+credentials:
+  usernames:
+    admin:
+      email: admin@example.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Administrador
+      password: $2b$12$0Co0Vgq9Teg57XopfXFZVuqHAbVbUrJUyQXdX2QRWdLVnqaiwBQaK
+      roles:
+        - admin
+        - user
+    usuario:
+      email: usuario@example.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Usuario Demo
+      password: $2b$12$nXFCLZRLID5JgEAnP0Ko8u28PXxjiAAj.4goEw.e8VZuTbfYWTsMS
+      roles:
+        - user
