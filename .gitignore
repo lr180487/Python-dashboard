@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # =========================================================
 # PYTHON
 # =========================================================
@@ -20,6 +21,8 @@ ENV/
 # =========================================================
 build/
 =======
+=======
+>>>>>>> 5ffa398284413b837d8982882ffce6c346e3be32
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -32,6 +35,9 @@ __pycache__/
 .Python
 build/
 develop-eggs/
+<<<<<<< HEAD
+>>>>>>> 5ffa398284413b837d8982882ffce6c346e3be32
+=======
 >>>>>>> 5ffa398284413b837d8982882ffce6c346e3be32
 dist/
 downloads/
@@ -47,6 +53,7 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+<<<<<<< HEAD
 <<<<<<< HEAD
 pip-wheel-metadata/
 
@@ -174,6 +181,8 @@ docker-compose.override.yml
 # =========================================================
 requirements.txt.bak
 =======
+=======
+>>>>>>> 5ffa398284413b837d8982882ffce6c346e3be32
 MANIFEST
 
 # PyInstaller
@@ -366,4 +375,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+<<<<<<< HEAD
+>>>>>>> 5ffa398284413b837d8982882ffce6c346e3be32
+=======
 >>>>>>> 5ffa398284413b837d8982882ffce6c346e3be32

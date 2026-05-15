@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Dashboard de Ventas
 
 Dashboard interactivo construido con Streamlit para visualizar métricas de ventas.
@@ -43,6 +44,9 @@ streamlit run app.py
 - Gráfico de pastel (ventas por categoría)
 - Gráfico de línea (tendencia diaria)
 - Tabla de datos detallados
+=======
+# Python-dashboard
+>>>>>>> 5ffa398284413b837d8982882ffce6c346e3be32
 =======
 # Python-dashboard
 >>>>>>> 5ffa398284413b837d8982882ffce6c346e3be32
