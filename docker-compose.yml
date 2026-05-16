@@ -1,36 +1,38 @@
-```dockerfile
-# ============================================
-# BUILDER
-# ============================================
+```dockerfile id="l6q9n2"
+# =====================================================
+# BUILDER STAGE
+# =====================================================
 FROM python:3.12-alpine AS builder
 
 WORKDIR /app
 
-# Dependencias sistema
+# Dependencias necesarias
 RUN apk add --no-cache \
-    build-base \
     gcc \
     musl-dev \
     libffi-dev \
     openssl-dev \
-    cargo
+    cargo \
+    build-base
 
-# Virtualenv
+# Crear entorno virtual
 RUN python -m venv /opt/venv
 
 # Activar venv
 ENV PATH="/opt/venv/bin:$PATH"
 
+# Actualizar pip
+RUN pip install --upgrade pip
+
 # Copiar requirements
 COPY requirements.txt .
 
 # Instalar dependencias
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# ============================================
-# RUNTIME
-# ============================================
+# =====================================================
+# RUNTIME STAGE
+# =====================================================
 FROM python:3.12-alpine
 
 WORKDIR /app
@@ -41,10 +43,10 @@ RUN apk add --no-cache \
     libffi \
     openssl
 
-# Copiar virtualenv
+# Copiar entorno virtual
 COPY --from=builder /opt/venv /opt/venv
 
-# ACTIVAR VENV
+# IMPORTANTE
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Copiar proyecto
@@ -58,6 +60,6 @@ USER appuser
 
 EXPOSE 8501
 
-# Streamlit
+# Ejecutar Streamlit
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 ```
