@@ -1,108 +1,98 @@
 # =========================================================
-# BUILDER STAGE
+# STAGE 1 — BUILDER
 # =========================================================
-
 FROM python:3.12-slim AS builder
 
 # =========================================================
-# VARIABLES
+# ENVIRONMENT
 # =========================================================
-
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_NO_CACHE_DIR=1
 
+# =========================================================
+# WORKDIR
+# =========================================================
 WORKDIR /app
 
 # =========================================================
-# DEPENDENCIAS SISTEMA
+# SYSTEM DEPENDENCIES
 # =========================================================
-
 RUN apt-get update && apt-get install -y \
     build-essential \
     gcc \
+    python3-dev \
+    libc6-dev \
+    libpq-dev \
     libffi-dev \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 # =========================================================
-# VENV
+# CREATE VENV
 # =========================================================
-
 RUN python -m venv /opt/venv
 
 ENV PATH="/opt/venv/bin:$PATH"
 
 # =========================================================
-# REQUIREMENTS
+# INSTALL DEPENDENCIES
 # =========================================================
-
 COPY requirements.txt .
 
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN pip install --upgrade pip setuptools wheel
+
+RUN pip install -r requirements.txt
 
 # =========================================================
-# RUNTIME STAGE
+# STAGE 2 — RUNTIME
 # =========================================================
-
 FROM python:3.12-slim
 
 # =========================================================
-# VARIABLES
+# ENVIRONMENT
 # =========================================================
-
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PATH="/opt/venv/bin:$PATH"
+    PATH="/opt/venv/bin:$PATH" \
+    STREAMLIT_SERVER_PORT=8501 \
+    STREAMLIT_SERVER_ADDRESS=0.0.0.0 \
+    STREAMLIT_SERVER_HEADLESS=true
 
+# =========================================================
+# WORKDIR
+# =========================================================
 WORKDIR /app
 
 # =========================================================
 # RUNTIME DEPENDENCIES
 # =========================================================
-
 RUN apt-get update && apt-get install -y \
-    libffi8 \
+    libpq5 \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 # =========================================================
-# COPIAR VENV
+# COPY VENV
 # =========================================================
-
 COPY --from=builder /opt/venv /opt/venv
 
 # =========================================================
-# COPIAR APP
+# COPY PROJECT
 # =========================================================
-
 COPY . .
-
-# =========================================================
-# USER NO ROOT
-# =========================================================
-
-RUN useradd -m appuser && \
-    chown -R appuser:appuser /app
-
-USER appuser
 
 # =========================================================
 # HEALTHCHECK
 # =========================================================
-
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
 
 # =========================================================
-# PORT
+# EXPOSE
 # =========================================================
-
 EXPOSE 8501
 
 # =========================================================
-# START
+# START STREAMLIT
 # =========================================================
-
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
