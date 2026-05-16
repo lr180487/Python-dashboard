@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: python-app
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./:/app
+
+    env_file:
+      - .env
+
+    restart: unless-stopped
+
+    depends_on:
+      - postgres
+
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:16-alpine
+
+    container_name: postgres-db
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: dashboard
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:

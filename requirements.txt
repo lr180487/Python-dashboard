@@ -6,29 +6,25 @@
 #
 altair==6.1.0
     # via streamlit
-annotated-types==0.7.0
-    # via pydantic
 anyio==4.13.0
     # via
     #   httpx
     #   starlette
     #   streamlit
-    #   vercel
-    #   vercel-workers
 attrs==26.1.0
     # via
     #   jsonschema
     #   referencing
 bcrypt==5.0.0
-    # via streamlit-authenticator
+    # via
+    #   -r requirements.in
+    #   streamlit-authenticator
 blinker==1.9.0
     # via streamlit
 cachetools==7.1.1
     # via streamlit
 captcha==0.7.1
     # via streamlit-authenticator
-cbor2==6.1.0
-    # via vercel
 certifi==2026.4.22
     # via
     #   httpcore
@@ -63,10 +59,8 @@ httpcore==1.0.9
 httptools==0.7.1
     # via streamlit
 httpx==0.28.1
-    # via
-    #   vercel
-    #   vercel-workers
-idna==3.13
+    # via -r requirements.in
+idna==3.15
     # via
     #   anyio
     #   httpx
@@ -83,12 +77,13 @@ jsonschema-specifications==2025.9.1
     # via jsonschema
 markupsafe==3.0.3
     # via jinja2
-narwhals==2.20.0
+narwhals==2.21.0
     # via
     #   altair
     #   plotly
-numpy==2.4.4
+numpy==2.4.5
     # via
+    #   -r requirements.in
     #   pandas
     #   pydeck
     #   streamlit
@@ -109,30 +104,21 @@ plotly==6.7.0
     # via -r requirements.in
 protobuf==7.34.1
     # via streamlit
+psycopg2-binary==2.9.12
+    # via -r requirements.in
 pyarrow==24.0.0
     # via streamlit
 pycparser==3.0
     # via cffi
-pydantic==2.13.4
-    # via
-    #   vercel
-    #   vercel-workers
-pydantic-core==2.46.4
-    # via pydantic
 pydeck==0.9.2
     # via streamlit
 pyjwt==2.12.1
     # via streamlit-authenticator
-python-bcrypt==0.3.2
-    # via -r requirements.in
 python-dateutil==2.9.0.post0
     # via pandas
 python-dotenv==1.2.2
-    # via
-    #   -r requirements.in
-    #   vercel
-    #   vercel-workers
-python-multipart==0.0.27
+    # via -r requirements.in
+python-multipart==0.0.28
     # via streamlit
 pyyaml==6.0.3
     # via
@@ -142,8 +128,10 @@ referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
-requests==2.33.1
-    # via streamlit
+requests==2.34.2
+    # via
+    #   -r requirements.in
+    #   streamlit
 rpds-py==0.30.0
     # via
     #   jsonschema
@@ -170,28 +158,15 @@ toml==0.10.2
 typing-extensions==4.15.0
     # via
     #   altair
-    #   pydantic
-    #   pydantic-core
     #   sqlalchemy
     #   streamlit
-    #   typing-inspection
-typing-inspection==0.4.2
-    # via pydantic
 tzdata==2026.2
     # via pandas
-urllib3==2.6.3
+urllib3==2.7.0
     # via requests
-uvicorn==0.46.0
+uvicorn==0.47.0
     # via streamlit
-vercel==0.5.8
-    # via
-    #   -r requirements.in
-    #   vercel-workers
-vercel-workers==0.0.22
-    # via vercel
 watchdog==6.0.0
     # via streamlit
 websockets==16.0
-    # via
-    #   streamlit
-    #   vercel
+    # via streamlit
