@@ -1,65 +1,62 @@
-```dockerfile id="l6q9n2"
-# =====================================================
-# BUILDER STAGE
-# =====================================================
-FROM python:3.12-alpine AS builder
+version: "3.9"
 
-WORKDIR /app
+services:
 
-# Dependencias necesarias
-RUN apk add --no-cache \
-    gcc \
-    musl-dev \
-    libffi-dev \
-    openssl-dev \
-    cargo \
-    build-base
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
 
-# Crear entorno virtual
-RUN python -m venv /opt/venv
+    container_name: python-api
 
-# Activar venv
-ENV PATH="/opt/venv/bin:$PATH"
+    ports:
+      - "8000:8000"
 
-# Actualizar pip
-RUN pip install --upgrade pip
+    volumes:
+      - ./:/app
 
-# Copiar requirements
-COPY requirements.txt .
+    env_file:
+      - .env
 
-# Instalar dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+    depends_on:
+      - postgres
+      - redis
 
-# =====================================================
-# RUNTIME STAGE
-# =====================================================
-FROM python:3.12-alpine
+    restart: unless-stopped
 
-WORKDIR /app
+    networks:
+      - backend
 
-# Dependencias runtime
-RUN apk add --no-cache \
-    libstdc++ \
-    libffi \
-    openssl
+  postgres:
+    image: postgres:16-alpine
 
-# Copiar entorno virtual
-COPY --from=builder /opt/venv /opt/venv
+    container_name: postgres-db
 
-# IMPORTANTE
-ENV PATH="/opt/venv/bin:$PATH"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: dashboard
 
-# Copiar proyecto
-COPY . .
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-# Usuario seguro
-RUN adduser -D appuser
-RUN chown -R appuser:appuser /app
+    restart: unless-stopped
 
-USER appuser
+    networks:
+      - backend
 
-EXPOSE 8501
+  redis:
+    image: redis:7-alpine
 
-# Ejecutar Streamlit
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
-```
+    container_name: redis-cache
+
+    restart: unless-stopped
+
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:

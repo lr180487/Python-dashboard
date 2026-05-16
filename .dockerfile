@@ -1,29 +1,108 @@
-FROM python:3.12-alpine
+# =========================================================
+# BUILDER STAGE
+# =========================================================
 
-# Variables optimización
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+FROM python:3.12-slim AS builder
 
-# Directorio trabajo
+# =========================================================
+# VARIABLES
+# =========================================================
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
 WORKDIR /app
 
-# Dependencias del sistema
-RUN apk add --no-cache \
-    gcc \
-    musl-dev \
-    libffi-dev
+# =========================================================
+# DEPENDENCIAS SISTEMA
+# =========================================================
 
-# Copiar requirements primero
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    libffi-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# =========================================================
+# VENV
+# =========================================================
+
+RUN python -m venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+
+# =========================================================
+# REQUIREMENTS
+# =========================================================
+
 COPY requirements.txt .
 
-# Instalar dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-# Copiar aplicación
+# =========================================================
+# RUNTIME STAGE
+# =========================================================
+
+FROM python:3.12-slim
+
+# =========================================================
+# VARIABLES
+# =========================================================
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PATH="/opt/venv/bin:$PATH"
+
+WORKDIR /app
+
+# =========================================================
+# RUNTIME DEPENDENCIES
+# =========================================================
+
+RUN apt-get update && apt-get install -y \
+    libffi8 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# =========================================================
+# COPIAR VENV
+# =========================================================
+
+COPY --from=builder /opt/venv /opt/venv
+
+# =========================================================
+# COPIAR APP
+# =========================================================
+
 COPY . .
 
-# Puerto
-EXPOSE 8000
+# =========================================================
+# USER NO ROOT
+# =========================================================
 
-# Ejecutar
-CMD ["python", "app.py"]
+RUN useradd -m appuser && \
+    chown -R appuser:appuser /app
+
+USER appuser
+
+# =========================================================
+# HEALTHCHECK
+# =========================================================
+
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+
+# =========================================================
+# PORT
+# =========================================================
+
+EXPOSE 8501
+
+# =========================================================
+# START
+# =========================================================
+
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
