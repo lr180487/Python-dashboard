@@ -1,54 +1,63 @@
-version: "3.9"
+```dockerfile
+# ============================================
+# BUILDER
+# ============================================
+FROM python:3.12-alpine AS builder
 
-services:
+WORKDIR /app
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+# Dependencias sistema
+RUN apk add --no-cache \
+    build-base \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    cargo
 
-    container_name: python-app
+# Virtualenv
+RUN python -m venv /opt/venv
 
-    ports:
-      - "8000:8000"
+# Activar venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-    volumes:
-      - ./:/app
+# Copiar requirements
+COPY requirements.txt .
 
-    env_file:
-      - .env
+# Instalar dependencias
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-    restart: unless-stopped
+# ============================================
+# RUNTIME
+# ============================================
+FROM python:3.12-alpine
 
-    depends_on:
-      - postgres
+WORKDIR /app
 
-    networks:
-      - backend
+# Dependencias runtime
+RUN apk add --no-cache \
+    libstdc++ \
+    libffi \
+    openssl
 
-  postgres:
-    image: postgres:16-alpine
+# Copiar virtualenv
+COPY --from=builder /opt/venv /opt/venv
 
-    container_name: postgres-db
+# ACTIVAR VENV
+ENV PATH="/opt/venv/bin:$PATH"
 
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: dashboard
+# Copiar proyecto
+COPY . .
 
-    ports:
-      - "5432:5432"
+# Usuario seguro
+RUN adduser -D appuser
+RUN chown -R appuser:appuser /app
 
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+USER appuser
 
-    restart: unless-stopped
+EXPOSE 8501
 
-    networks:
-      - backend
-
-volumes:
-  postgres_data:
-
-networks:
-  backend:
+# Streamlit
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
