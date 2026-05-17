@@ -13,20 +13,22 @@ def render_pie_chart(df: pd.DataFrame):
         values="Ventas",
         names="Categoría",
         title="Ventas por Categoría",
-        hole=0.3
+        hole=0.3,
     )
     st.plotly_chart(fig, width="stretch")
 
 
 def render_line_chart(df: pd.DataFrame):
     """Gráfico de línea: tendencia de ventas diarias."""
-    ventas_diarias = df.groupby("Fecha")["Ventas"].sum().reset_index().sort_values("Fecha")
+    ventas_diarias = (
+        df.groupby("Fecha")["Ventas"].sum().reset_index().sort_values("Fecha")
+    )
     fig = px.line(
         ventas_diarias,
         x="Fecha",
         y="Ventas",
         title="Tendencia de Ventas Diarias",
-        markers=True
+        markers=True,
     )
     fig.update_layout(xaxis_title="Fecha", yaxis_title="Ventas ($)")
     st.plotly_chart(fig, width="stretch")

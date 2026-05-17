@@ -35,6 +35,7 @@ def _build_credentials_from_db():
     """Construye el diccionario de credenciales desde la base de datos."""
     with db_session() as db:
         from database.models import User
+
         users = db.query(User).all()
         creds = {"usernames": {}}
         for u in users:
@@ -85,7 +86,9 @@ def render_register(authenticator, credentials, config=None):
     """Renderiza formulario de registro y guarda en la BD."""
     st.subheader("Crear nueva cuenta")
     try:
-        email, username, name = authenticator.register_user(location="main", captcha=False)
+        email, username, name = authenticator.register_user(
+            location="main", captcha=False
+        )
         if email and username and name:
             password = credentials["usernames"][username]["password"]
             save_new_user(username, name, email, password)

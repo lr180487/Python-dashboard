@@ -23,11 +23,13 @@ def generar_datos(dias: int = 90) -> pd.DataFrame:
     data = []
     for date in dates:
         for cat in CATEGORIAS:
-            data.append({
-                "Fecha": date,
-                "Categoría": cat,
-                "Ventas": random.randint(500, 5000),
-                "Unidades": random.randint(10, 200),
-                "Clientes": random.randint(5, 100)
-            })
+            data.append(
+                {
+                    "Fecha": date,
+                    "Categoría": cat,
+                    "Ventas": random.randint(500, 5000),
+                    "Unidades": random.randint(10, 200),
+                    "Clientes": random.randint(5, 100),
+                }
+            )
     return pd.DataFrame(data)

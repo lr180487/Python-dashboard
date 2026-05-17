@@ -10,6 +10,7 @@ Base = declarative_base()
 
 class User(Base):
     """Modelo de usuario para autenticación."""
+
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -29,6 +30,7 @@ class User(Base):
 
 class Venta(Base):
     """Modelo de ventas para almacenar datos históricos."""
+
     __tablename__ = "ventas"
 
     id = Column(Integer, primary_key=True, index=True)

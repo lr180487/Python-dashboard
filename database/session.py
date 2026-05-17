@@ -30,8 +30,7 @@ def _add_client_encoding_to_url(url: str) -> str:
 
 
 _raw_url = os.getenv(
-    "DATABASE_URL",
-    "postgresql://user:password@localhost:5432/dashboard"
+    "DATABASE_URL", "postgresql://user:password@localhost:5432/dashboard"
 )
 DATABASE_URL = _add_client_encoding_to_url(_raw_url)
 

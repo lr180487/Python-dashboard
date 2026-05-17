@@ -21,9 +21,23 @@ IMPORT_TO_PACKAGE = {
 
 # módulos estándar de Python (no incluir)
 STDLIB = {
-    "os", "sys", "math", "json", "datetime", "re", "subprocess",
-    "pathlib", "itertools", "collections", "typing", "threading",
-    "asyncio", "logging", "functools", "random", "time"
+    "os",
+    "sys",
+    "math",
+    "json",
+    "datetime",
+    "re",
+    "subprocess",
+    "pathlib",
+    "itertools",
+    "collections",
+    "typing",
+    "threading",
+    "asyncio",
+    "logging",
+    "functools",
+    "random",
+    "time",
 }
 
 

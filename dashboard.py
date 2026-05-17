@@ -12,8 +12,16 @@ st.markdown("Panel de control interactivo con métricas clave y visualizaciones.
 
 # Sidebar
 st.sidebar.header("Filtros")
-periodo = st.sidebar.selectbox("Período", ["Últimos 7 días", "Últimos 30 días", "Últimos 90 días"])
-categoria = st.sidebar.multiselect("Categoría", ["Electrónica", "Ropa", "Hogar", "Deportes"], default=["Electrónica", "Ropa", "Hogar", "Deportes"])
+periodo = st.sidebar.selectbox(
+    "Período",
+    ["Últimos 7 días", "Últimos 30 días", "Últimos 90 días"],
+)
+categoria = st.sidebar.multiselect(
+    "Categoría",
+    ["Electrónica", "Ropa", "Hogar", "Deportes"],
+    default=["Electrónica", "Ropa", "Hogar", "Deportes"],
+)
+
 
 # Generar datos de ejemplo
 @st.cache_data
@@ -23,14 +31,17 @@ def generar_datos():
     data = []
     for date in dates:
         for cat in categorias:
-            data.append({
-                "Fecha": date,
-                "Categoría": cat,
-                "Ventas": random.randint(500, 5000),
-                "Unidades": random.randint(10, 200),
-                "Clientes": random.randint(5, 100)
-            })
+            data.append(
+                {
+                    "Fecha": date,
+                    "Categoría": cat,
+                    "Ventas": random.randint(500, 5000),
+                    "Unidades": random.randint(10, 200),
+                    "Clientes": random.randint(5, 100),
+                }
+            )
     return pd.DataFrame(data)
+
 
 df = generar_datos()
 
@@ -67,18 +78,27 @@ col_left, col_right = st.columns(2)
 
 with col_left:
     ventas_por_categoria = df_filtrado.groupby("Categoría")["Ventas"].sum().reset_index()
-    fig_pie = px.pie(ventas_por_categoria, values="Ventas", names="Categoría", title="Ventas por Categoría")
-    st.plotly_chart(fig_pie, width='stretch')
+    fig_pie = px.pie(
+        ventas_por_categoria,
+        values="Ventas",
+        names="Categoría",
+        title="Ventas por Categoría",
+    )
+    st.plotly_chart(fig_pie, width="stretch")
 
 with col_right:
     ventas_diarias = df_filtrado.groupby("Fecha")["Ventas"].sum().reset_index()
-    fig_line = px.line(ventas_diarias, x="Fecha", y="Ventas", title="Tendencia de Ventas Diarias")
-    st.plotly_chart(fig_line, width='stretch')
+    fig_line = px.line(
+        ventas_diarias, x="Fecha", y="Ventas", title="Tendencia de Ventas Diarias"
+    )
+    st.plotly_chart(fig_line, width="stretch")
 
 # Tabla de datos
 st.subheader("Datos Detallados")
-st.dataframe(df_filtrado.sort_values("Fecha", ascending=False), width='stretch')
+st.dataframe(df_filtrado.sort_values("Fecha", ascending=False), width="stretch")
 
 # Barra de estado
 st.markdown("---")
-st.caption(f"Dashboard actualizado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+st.caption(
+    f"Dashboard actualizado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+)
