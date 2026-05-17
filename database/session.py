@@ -15,10 +15,6 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
-# =========================================================
-# Configuration
-# =========================================================
-
 _raw_url = os.getenv(
     "DATABASE_URL", "postgresql://user:password@localhost:5432/dashboard"
 )
@@ -26,11 +22,6 @@ DATABASE_URL = _raw_url
 
 engine = None
 SessionLocal = None
-
-
-# =========================================================
-# Helper Functions
-# =========================================================
 
 
 def _add_client_encoding_to_url(url: str) -> str:
@@ -84,11 +75,6 @@ def _create_engine_with_fallback() -> None:
 
 
 _create_engine_with_fallback()
-
-
-# =========================================================
-# Session Managers
-# =========================================================
 
 
 def get_db():

@@ -18,11 +18,6 @@ from database.session import db_session
 CONFIG_PATH = Path(__file__).parent / "config.yaml"
 
 
-# =========================================================
-# Cookie Configuration
-# =========================================================
-
-
 def _load_cookie_config() -> dict:
     """Load cookie config from YAML with environment override."""
     with open(CONFIG_PATH, "r", encoding="utf-8") as file:
@@ -34,11 +29,6 @@ def _load_cookie_config() -> dict:
         cookie["key"] = env_key
 
     return cookie
-
-
-# =========================================================
-# Credentials Management
-# =========================================================
 
 
 def _build_credentials_from_db() -> dict:
@@ -79,11 +69,6 @@ def get_authenticator():
     return authenticator, credentials
 
 
-# =========================================================
-# User Management
-# =========================================================
-
-
 def save_new_user(
     username: str, name: str, email: str, password: str, roles: str = "user"
 ) -> None:
@@ -98,11 +83,6 @@ def update_password(username: str, new_password: str) -> None:
     password_hash = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
     with db_session() as db:
         update_user_password(db, username, password_hash)
-
-
-# =========================================================
-# UI Components
-# =========================================================
 
 
 def render_register(authenticator, credentials, config=None) -> None:

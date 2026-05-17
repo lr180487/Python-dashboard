@@ -8,11 +8,6 @@ from sqlalchemy.orm import Session
 from .models import User, Venta
 
 
-# =========================================================
-# User Operations
-# =========================================================
-
-
 def get_user_by_username(db: Session, username: str) -> Optional[User]:
     """Get user by username."""
     return db.query(User).filter(User.username == username).first()
@@ -60,11 +55,6 @@ def update_user_password(
 def get_all_users(db: Session) -> List[User]:
     """Get all users."""
     return db.query(User).all()
-
-
-# =========================================================
-# Sales Operations
-# =========================================================
 
 
 def create_venta(
