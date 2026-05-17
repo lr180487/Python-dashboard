@@ -1,25 +1,25 @@
-"""Componentes de visualización con Plotly."""
+"""Plotly visualization components."""
 
+import pandas as pd
 import plotly.express as px
 import streamlit as st
-import pandas as pd
 
 
-def render_pie_chart(df: pd.DataFrame):
-    """Gráfico de pastel: ventas por categoría."""
+def render_pie_chart(df: pd.DataFrame) -> None:
+    """Render pie chart: sales by category."""
     ventas_por_categoria = df.groupby("Categoría")["Ventas"].sum().reset_index()
     fig = px.pie(
         ventas_por_categoria,
         values="Ventas",
         names="Categoría",
-        title="Ventas por Categoría",
+        title="Sales by Category",
         hole=0.3,
     )
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
 
 
-def render_line_chart(df: pd.DataFrame):
-    """Gráfico de línea: tendencia de ventas diarias."""
+def render_line_chart(df: pd.DataFrame) -> None:
+    """Render line chart: daily sales trend."""
     ventas_diarias = (
         df.groupby("Fecha")["Ventas"].sum().reset_index().sort_values("Fecha")
     )
@@ -27,17 +27,18 @@ def render_line_chart(df: pd.DataFrame):
         ventas_diarias,
         x="Fecha",
         y="Ventas",
-        title="Tendencia de Ventas Diarias",
+        title="Daily Sales Trend",
         markers=True,
     )
-    fig.update_layout(xaxis_title="Fecha", yaxis_title="Ventas ($)")
-    st.plotly_chart(fig, width="stretch")
+    fig.update_layout(xaxis_title="Date", yaxis_title="Sales ($)")
+    st.plotly_chart(fig, use_container_width=True)
 
 
-def render_charts(df: pd.DataFrame):
-    """Renderiza ambos gráficos lado a lado."""
-    st.subheader("Visualizaciones")
+def render_charts(df: pd.DataFrame) -> None:
+    """Render both charts side by side."""
+    st.subheader("Visualizations")
     col_left, col_right = st.columns(2)
+
     with col_left:
         render_pie_chart(df)
     with col_right:

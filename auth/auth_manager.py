@@ -1,6 +1,6 @@
-"""Gestión de autenticación con streamlit-authenticator + SQLAlchemy ORM.
+"""Authentication management with streamlit-authenticator + SQLAlchemy ORM.
 
-PostgreSQL con fallback a SQLite.
+PostgreSQL with SQLite fallback.
 """
 
 import os
@@ -8,54 +8,65 @@ from pathlib import Path
 
 import bcrypt
 import streamlit as st
+import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-import streamlit_authenticator as stauth
-
+from database.crud import create_user, get_user_by_username, update_user_password
 from database.session import db_session
-from database.crud import get_user_by_username, create_user, update_user_password
 
 CONFIG_PATH = Path(__file__).parent / "config.yaml"
 
 
-def _load_cookie_config():
-    """Carga configuración de cookies desde YAML, con override desde env."""
+# =========================================================
+# Cookie Configuration
+# =========================================================
+
+
+def _load_cookie_config() -> dict:
+    """Load cookie config from YAML with environment override."""
     with open(CONFIG_PATH, "r", encoding="utf-8") as file:
         config = yaml.load(file, Loader=SafeLoader)
+
     cookie = config["cookie"]
-    # Override de la clave secreta desde variable de entorno (más seguro)
     env_key = os.getenv("COOKIE_SECRET")
     if env_key:
         cookie["key"] = env_key
+
     return cookie
 
 
-def _build_credentials_from_db():
-    """Construye el diccionario de credenciales desde la base de datos."""
+# =========================================================
+# Credentials Management
+# =========================================================
+
+
+def _build_credentials_from_db() -> dict:
+    """Build credentials dict from database."""
     with db_session() as db:
         from database.models import User
 
         users = db.query(User).all()
         creds = {"usernames": {}}
-        for u in users:
-            creds["usernames"][u.username] = {
-                "email": u.email,
-                "failed_login_attempts": u.failed_login_attempts,
+
+        for user in users:
+            creds["usernames"][user.username] = {
+                "email": user.email,
+                "failed_login_attempts": user.failed_login_attempts,
                 "logged_in": False,
-                "name": u.name,
-                "password": u.password_hash,
-                "roles": u.roles.split(",") if u.roles else ["user"],
+                "name": user.name,
+                "password": user.password_hash,
+                "roles": user.roles.split(",") if user.roles else ["user"],
             }
+
         return creds
 
 
 def get_authenticator():
-    """Crea y retorna el objeto Authenticator con credenciales desde la BD.
+    """Create and return Authenticator with credentials from DB.
 
-    Retorna una tupla (authenticator, credentials). El dict credentials es
-    mutable: streamlit-authenticator v0.4+ lo modifica en el registro, así que
-    podemos leer el password hasheado desde él.
+    Returns:
+        Tuple of (authenticator, credentials dictionary)
     """
     cookie = _load_cookie_config()
     credentials = _build_credentials_from_db()
@@ -68,23 +79,35 @@ def get_authenticator():
     return authenticator, credentials
 
 
-def save_new_user(username: str, name: str, email: str, password: str, roles: str = "user"):
-    """Guarda un nuevo usuario en la base de datos."""
+# =========================================================
+# User Management
+# =========================================================
+
+
+def save_new_user(
+    username: str, name: str, email: str, password: str, roles: str = "user"
+) -> None:
+    """Save new user to database."""
     password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     with db_session() as db:
         create_user(db, username, email, name, password_hash, roles)
 
 
-def update_password(username: str, new_password: str):
-    """Actualiza la contraseña de un usuario en la base de datos."""
+def update_password(username: str, new_password: str) -> None:
+    """Update user password in database."""
     password_hash = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
     with db_session() as db:
         update_user_password(db, username, password_hash)
 
 
-def render_register(authenticator, credentials, config=None):
-    """Renderiza formulario de registro y guarda en la BD."""
-    st.subheader("Crear nueva cuenta")
+# =========================================================
+# UI Components
+# =========================================================
+
+
+def render_register(authenticator, credentials, config=None) -> None:
+    """Render registration form and save to DB."""
+    st.subheader("Create new account")
     try:
         email, username, name = authenticator.register_user(
             location="main", captcha=False
@@ -92,19 +115,21 @@ def render_register(authenticator, credentials, config=None):
         if email and username and name:
             password = credentials["usernames"][username]["password"]
             save_new_user(username, name, email, password)
-            st.success("Usuario registrado exitosamente. Ahora puedes iniciar sesión.")
+            st.success("User registered successfully. You can now login.")
     except Exception as e:
-        st.error(f"Error en el registro: {e}")
+        st.error(f"Registration error: {e}")
 
 
-def render_forgot_password(authenticator, config=None):
-    """Renderiza formulario de recuperación de contraseña."""
-    st.subheader("Recuperar contraseña")
+def render_forgot_password(authenticator, config=None) -> None:
+    """Render password recovery form."""
+    st.subheader("Recover password")
     try:
-        username, email, new_password = authenticator.forgot_password(location="main")
+        username, email, new_password = authenticator.forgot_password(
+            location="main"
+        )
         if username and new_password:
             update_password(username, new_password)
-            st.success(f"Nueva contraseña generada: {new_password}")
-            st.info("Guarda esta contraseña de forma segura.")
+            st.success(f"New password generated: {new_password}")
+            st.info("Store this password securely.")
     except Exception as e:
-        st.error(f"Error en la recuperación: {e}")
+        st.error(f"Recovery error: {e}")
