@@ -1,8 +1,3 @@
-"""Authentication management with streamlit-authenticator + SQLAlchemy ORM.
-
-PostgreSQL with SQLite fallback.
-"""
-
 import os
 from pathlib import Path
 
@@ -19,7 +14,6 @@ CONFIG_PATH = Path(__file__).parent / "config.yaml"
 
 
 def _load_cookie_config() -> dict:
-    """Load cookie config from YAML with environment override."""
     with open(CONFIG_PATH, "r", encoding="utf-8") as file:
         config = yaml.load(file, Loader=SafeLoader)
 
@@ -32,7 +26,6 @@ def _load_cookie_config() -> dict:
 
 
 def _build_credentials_from_db() -> dict:
-    """Build credentials dict from database."""
     with db_session() as db:
         from database.models import User
 
@@ -53,11 +46,6 @@ def _build_credentials_from_db() -> dict:
 
 
 def get_authenticator():
-    """Create and return Authenticator with credentials from DB.
-
-    Returns:
-        Tuple of (authenticator, credentials dictionary)
-    """
     cookie = _load_cookie_config()
     credentials = _build_credentials_from_db()
     authenticator = stauth.Authenticate(
@@ -72,21 +60,18 @@ def get_authenticator():
 def save_new_user(
     username: str, name: str, email: str, password: str, roles: str = "user"
 ) -> None:
-    """Save new user to database."""
     password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     with db_session() as db:
         create_user(db, username, email, name, password_hash, roles)
 
 
 def update_password(username: str, new_password: str) -> None:
-    """Update user password in database."""
     password_hash = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
     with db_session() as db:
         update_user_password(db, username, password_hash)
 
 
 def render_register(authenticator, credentials, config=None) -> None:
-    """Render registration form and save to DB."""
     st.subheader("Create new account")
     try:
         email, username, name = authenticator.register_user(
@@ -101,7 +86,6 @@ def render_register(authenticator, credentials, config=None) -> None:
 
 
 def render_forgot_password(authenticator, config=None) -> None:
-    """Render password recovery form."""
     st.subheader("Recover password")
     try:
         username, email, new_password = authenticator.forgot_password(
