@@ -14,8 +14,18 @@
 # TOML
 *.toml text eol=lf
 
-# Shell
-*.sh text eol=lf
+# JavaScript
+*.js text eol=lf
+
+# Markdown
+*.md text eol=lf
+
+# TXT
+*.txt text eol=lf
+
+# Docker
+Dockerfile text eol=lf
+.dockerfile text eol=lf
 
 # Windows scripts
 *.bat text eol=crlf
