@@ -45,86 +45,86 @@ FEATURES = [
 CUSTOM_CSS = """
 <style>
 
-    /* ==================================================
-       GLOBAL
-    ================================================== */
+/* ======================================================
+   GLOBAL
+====================================================== */
 
-    .main {
-        padding-top: 2rem;
-    }
+.main {
+    padding-top: 2rem;
+}
 
-    /* ==================================================
-       HERO SECTION
-    ================================================== */
+/* ======================================================
+   HERO SECTION
+====================================================== */
 
-    .hero-container {
-        text-align: center;
-        padding: 4rem 1rem 3rem 1rem;
-    }
+.hero-container {
+    text-align: center;
+    padding: 4rem 1rem 3rem 1rem;
+}
 
-    .hero-title {
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        color: #111827;
-    }
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #111827;
+}
 
-    .hero-subtitle {
-        font-size: 1.25rem;
-        color: #6b7280;
-        max-width: 700px;
-        margin: 0 auto;
-        line-height: 1.8;
-    }
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #6b7280;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
 
-    /* ==================================================
-       FEATURE CARDS
-    ================================================== */
+/* ======================================================
+   FEATURE CARDS
+====================================================== */
 
-    .feature-card {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-        transition: all 0.3s ease-in-out;
-        height: 100%;
-    }
+.feature-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease-in-out;
+    height: 100%;
+}
 
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    }
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
 
-    .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-    }
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
 
-    .feature-title {
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin-bottom: 0.75rem;
-        color: #111827;
-    }
+.feature-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #111827;
+}
 
-    .feature-description {
-        font-size: 1rem;
-        color: #6b7280;
-        line-height: 1.7;
-    }
+.feature-description {
+    font-size: 1rem;
+    color: #6b7280;
+    line-height: 1.7;
+}
 
-    /* ==================================================
-       FOOTER
-    ================================================== */
+/* ======================================================
+   FOOTER
+====================================================== */
 
-    .footer {
-        text-align: center;
-        color: #9ca3af;
-        padding: 2rem 0 1rem 0;
-        font-size: 0.9rem;
-    }
+.footer {
+    text-align: center;
+    color: #9ca3af;
+    padding: 2rem 0 1rem 0;
+    font-size: 0.9rem;
+}
 
 </style>
 """
@@ -133,7 +133,11 @@ CUSTOM_CSS = """
 # ======================================================
 # HELPER FUNCTIONS
 # ======================================================
-def render_feature_card(icon: str, title: str, description: str) -> None:
+def render_feature_card(
+    icon: str,
+    title: str,
+    description: str,
+) -> None:
     """Renderiza una tarjeta de funcionalidad."""
 
     st.markdown(
