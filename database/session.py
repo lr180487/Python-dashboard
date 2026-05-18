@@ -66,9 +66,7 @@ def _create_engine_with_fallback() -> None:
         _safe_print(f"[DB] URL: {database_url.replace('://', '://***:***@')}")
 
         sqlite_path = os.path.join(os.path.dirname(__file__), "..", "dashboard.db")
-        engine = create_engine(
-            f"sqlite:///{os.path.abspath(sqlite_path)}", echo=False
-        )
+        engine = create_engine(f"sqlite:///{os.path.abspath(sqlite_path)}", echo=False)
         _safe_print("[DB] Fallback to local SQLite.")
 
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
