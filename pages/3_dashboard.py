@@ -4,12 +4,12 @@ from datetime import datetime
 
 import streamlit as st
 
-from utils.config import DashboardConfig, CATEGORIAS, PERIODOS
-from utils.filters import filtrar_por_periodo, filtrar_por_categoria
-from data.generator import generar_datos
-from components.metrics import render_metrics
-from components.charts import render_charts
 from auth.auth_manager import get_authenticator
+from components.charts import render_charts
+from components.metrics import render_metrics
+from data.generator import generar_datos
+from utils.config import CATEGORIAS, PERIODOS, DashboardConfig
+from utils.filters import filtrar_por_categoria, filtrar_por_periodo
 
 st.set_page_config(page_title="Dashboard de Ventas", layout="wide", page_icon="📊")
 

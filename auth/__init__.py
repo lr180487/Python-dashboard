@@ -1,7 +1,7 @@
 from .auth_manager import (
     get_authenticator,
-    render_register,
     render_forgot_password,
+    render_register,
     save_new_user,
     update_password,
 )

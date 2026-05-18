@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-from auth.auth_manager import get_authenticator, render_register, render_forgot_password
+from auth.auth_manager import get_authenticator, render_forgot_password, render_register
 
 st.set_page_config(page_title="Iniciar Sesión", page_icon="🔐", layout="centered")
 

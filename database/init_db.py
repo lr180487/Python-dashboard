@@ -2,9 +2,9 @@
 
 import bcrypt
 
-from .session import engine, db_session
-from .models import Base, User
 from .crud import create_user
+from .models import Base, User
+from .session import db_session, engine
 
 _initialized = False
 

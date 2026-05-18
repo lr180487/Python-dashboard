@@ -19,8 +19,3 @@ python-dashboard/
 ├── alembic/               # Migraciones de base de datos
 ├── Dockerfile             # Configuración para contenedorización
 └── docker-compose.yaml    # Orquestación de servicios
-
-
-
-
-

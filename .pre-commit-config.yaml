@@ -1,10 +1,87 @@
+# =========================================================
+# 🚀 PRE-COMMIT CONFIG
+# =========================================================
+
+default_language_version:
+  python: python3.12
+
+exclude: |
+  (?x)^(
+      venv/|
+      \.venv/|
+      build/|
+      dist/|
+      alembic/versions/|
+      __pycache__/|
+      node_modules/|
+      migrations/
+  )
+
 repos:
+
+  # ======================================================
+  # 🧹 BLACK - CODE FORMATTER
+  # ======================================================
   - repo: https://github.com/psf/black
     rev: 25.1.0
     hooks:
       - id: black
+        language_version: python3.12
 
+  # ======================================================
+  # 📚 ISORT - IMPORT SORTER
+  # ======================================================
   - repo: https://github.com/PyCQA/isort
     rev: 6.0.1
     hooks:
       - id: isort
+        args: ["--profile", "black"]
+
+  # ======================================================
+  # 🔎 FLAKE8 - LINTER
+  # ======================================================
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-pyproject
+
+  # ======================================================
+  # 🛠️ COMMON FILE FIXES
+  # ======================================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+
+      # Remove trailing spaces
+      - id: trailing-whitespace
+
+      # Ensure newline at EOF
+      - id: end-of-file-fixer
+
+      # Validate YAML
+      - id: check-yaml
+
+      # Validate JSON
+      - id: check-json
+
+      # Prevent large files
+      - id: check-added-large-files
+
+      # Detect merge conflicts
+      - id: check-merge-conflict
+
+      # Prevent debug statements
+      - id: debug-statements
+
+      # Validate TOML
+      - id: check-toml
+
+      # Validate XML
+      - id: check-xml
+
+      # Normalize line endings
+      - id: mixed-line-ending
+        args: ["--fix=lf"]

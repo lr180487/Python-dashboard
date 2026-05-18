@@ -1,7 +1,7 @@
 """Componente de métricas principales."""
 
-import streamlit as st
 import pandas as pd
+import streamlit as st
 
 
 def render_metrics(df: pd.DataFrame):
