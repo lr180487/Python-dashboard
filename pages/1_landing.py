@@ -3,6 +3,8 @@
 # ======================================================
 # IMPORTS
 # ======================================================
+from typing import Final
+
 import streamlit as st
 
 # ======================================================
@@ -18,7 +20,7 @@ st.set_page_config(
 # ======================================================
 # CONSTANTS
 # ======================================================
-FEATURES = [
+FEATURES: Final[list[dict[str, str]]] = [
     {
         "icon": "📊",
         "title": "Dashboard Interactivo",
@@ -35,14 +37,16 @@ FEATURES = [
     },
     {
         "icon": "⚡",
-        "title": "Tiempo Real",
+        "title": "Datos en Tiempo Real",
         "description": (
             "Visualizaciones rápidas y datos " "actualizados dinámicamente."
         ),
     },
 ]
 
-CUSTOM_CSS = """
+CUSTOM_CSS: Final[
+    str
+] = """
 <style>
 
 /* ======================================================
@@ -59,7 +63,7 @@ CUSTOM_CSS = """
 
 .hero-container {
     text-align: center;
-    padding: 4rem 1rem 3rem 1rem;
+    padding: 4rem 1rem 3rem;
 }
 
 .hero-title {
@@ -116,13 +120,21 @@ CUSTOM_CSS = """
 }
 
 /* ======================================================
+   CTA BUTTON
+====================================================== */
+
+.cta-container {
+    padding: 2rem 0;
+}
+
+/* ======================================================
    FOOTER
 ====================================================== */
 
 .footer {
     text-align: center;
     color: #9CA3AF;
-    padding: 2rem 0 1rem 0;
+    padding: 2rem 0 1rem;
     font-size: 0.9rem;
 }
 
@@ -162,8 +174,77 @@ def render_feature_card(
     )
 
 
+def render_hero_section() -> None:
+    """Renderiza la sección principal."""
+
+    st.markdown(
+        """
+        <div class="hero-container">
+
+            <h1 class="hero-title">
+                Gestión Inteligente de Ventas
+            </h1>
+
+            <p class="hero-subtitle">
+                Visualiza métricas, analiza tendencias
+                y toma decisiones estratégicas con
+                datos en tiempo real.
+            </p>
+
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_cta_button() -> None:
+    """Renderiza el botón principal."""
+
+    _, center_col, _ = st.columns([1, 1, 1])
+
+    with center_col:
+        login_clicked = st.button(
+            "🔐 Iniciar Sesión",
+            type="primary",
+            use_container_width=True,
+        )
+
+        if login_clicked:
+            st.switch_page("pages/2_login.py")
+
+
+def render_features_section() -> None:
+    """Renderiza las funcionalidades principales."""
+
+    st.subheader("✨ Funcionalidades principales")
+
+    columns = st.columns(len(FEATURES))
+
+    for column, feature in zip(columns, FEATURES):
+        with column:
+            render_feature_card(
+                icon=feature["icon"],
+                title=feature["title"],
+                description=feature["description"],
+            )
+
+
+def render_footer() -> None:
+    """Renderiza el footer."""
+
+    st.markdown(
+        """
+        <div class="footer">
+            © 2026 · Dashboard de Ventas ·
+            Todos los derechos reservados
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 # ======================================================
-# APPLY CUSTOM CSS
+# APP INITIALIZATION
 # ======================================================
 st.markdown(
     CUSTOM_CSS,
@@ -171,70 +252,26 @@ st.markdown(
 )
 
 # ======================================================
-# HERO SECTION
+# PAGE CONTENT
 # ======================================================
+render_hero_section()
+
 st.markdown(
-    """
-    <div class="hero-container">
-
-        <h1 class="hero-title">
-            Gestión Inteligente de Ventas
-        </h1>
-
-        <p class="hero-subtitle">
-            Visualiza métricas, analiza tendencias
-            y toma decisiones estratégicas con
-            datos en tiempo real.
-        </p>
-
-    </div>
-    """,
+    '<div class="cta-container">',
     unsafe_allow_html=True,
 )
 
-# ======================================================
-# CTA BUTTON
-# ======================================================
-_, center_col, _ = st.columns([1, 1, 1])
-
-with center_col:
-    login_clicked = st.button(
-        "🔐 Iniciar Sesión",
-        type="primary",
-        use_container_width=True,
-    )
-
-    if login_clicked:
-        st.switch_page("pages/2_login.py")
-
-st.divider()
-
-# ======================================================
-# FEATURES SECTION
-# ======================================================
-st.subheader("✨ Funcionalidades principales")
-
-columns = st.columns(3)
-
-for column, feature in zip(columns, FEATURES):
-    with column:
-        render_feature_card(
-            icon=feature["icon"],
-            title=feature["title"],
-            description=feature["description"],
-        )
-
-# ======================================================
-# FOOTER
-# ======================================================
-st.divider()
+render_cta_button()
 
 st.markdown(
-    """
-    <div class="footer">
-        © 2026 · Dashboard de Ventas ·
-        Todos los derechos reservados
-    </div>
-    """,
+    "</div>",
     unsafe_allow_html=True,
 )
+
+st.divider()
+
+render_features_section()
+
+st.divider()
+
+render_footer()
