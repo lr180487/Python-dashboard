@@ -71,7 +71,7 @@ CUSTOM_CSS = """
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: #6b7280;
+    color: #6B7280;
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.8;
@@ -82,11 +82,11 @@ CUSTOM_CSS = """
 ====================================================== */
 
 .feature-card {
-    background: #ffffff;
+    background: #FFFFFF;
     border-radius: 16px;
     padding: 2rem 1.5rem;
     text-align: center;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E5E7EB;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
     transition: all 0.3s ease-in-out;
     height: 100%;
@@ -111,7 +111,7 @@ CUSTOM_CSS = """
 
 .feature-description {
     font-size: 1rem;
-    color: #6b7280;
+    color: #6B7280;
     line-height: 1.7;
 }
 
@@ -121,7 +121,7 @@ CUSTOM_CSS = """
 
 .footer {
     text-align: center;
-    color: #9ca3af;
+    color: #9CA3AF;
     padding: 2rem 0 1rem 0;
     font-size: 0.9rem;
 }
@@ -182,8 +182,9 @@ st.markdown(
         </h1>
 
         <p class="hero-subtitle">
-            Visualiza métricas, analiza tendencias y toma
-            decisiones estratégicas con datos en tiempo real.
+            Visualiza métricas, analiza tendencias
+            y toma decisiones estratégicas con
+            datos en tiempo real.
         </p>
 
     </div>
