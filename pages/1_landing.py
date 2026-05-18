@@ -1,57 +1,168 @@
-"""Landing page atractiva con CTA hacia login."""
+"""Landing page moderna y responsive para el dashboard."""
 
+# ======================================================
+# IMPORTS
+# ======================================================
 import streamlit as st
 
 # ======================================================
-# PAGE CONFIG
+# PAGE CONFIGURATION
 # ======================================================
 st.set_page_config(
-    page_title="Bienvenido",
+    page_title="Dashboard de Ventas",
     page_icon="🚀",
-    layout="centered",
+    layout="wide",
+    initial_sidebar_state="collapsed",
 )
 
 # ======================================================
-# CUSTOM CSS
+# CONSTANTS
 # ======================================================
-st.markdown(
-    """
-    <style>
-    .hero {
+FEATURES = [
+    {
+        "icon": "📊",
+        "title": "Dashboard Interactivo",
+        "description": (
+            "Métricas clave y gráficos dinámicos " "filtrables por período y categoría."
+        ),
+    },
+    {
+        "icon": "🔐",
+        "title": "Autenticación Segura",
+        "description": (
+            "Sistema de usuarios con registro, " "login y recuperación de contraseña."
+        ),
+    },
+    {
+        "icon": "⚡",
+        "title": "Tiempo Real",
+        "description": (
+            "Visualizaciones rápidas y datos " "actualizados dinámicamente."
+        ),
+    },
+]
+
+CUSTOM_CSS = """
+<style>
+
+    /* ==================================================
+       GLOBAL
+    ================================================== */
+
+    .main {
+        padding-top: 2rem;
+    }
+
+    /* ==================================================
+       HERO SECTION
+    ================================================== */
+
+    .hero-container {
         text-align: center;
-        padding: 3rem 1rem 2rem 1rem;
+        padding: 4rem 1rem 3rem 1rem;
     }
 
-    .hero h1 {
-        font-size: 3rem;
+    .hero-title {
+        font-size: 3.5rem;
         font-weight: 800;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        color: #111827;
     }
 
-    .hero p {
-        font-size: 1.2rem;
-        color: #666;
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: #6b7280;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.8;
     }
+
+    /* ==================================================
+       FEATURE CARDS
+    ================================================== */
 
     .feature-card {
-        background-color: #f8f9fa;
-        border-radius: 12px;
-        padding: 1.5rem;
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 2rem 1.5rem;
         text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease-in-out;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     }
 
     .feature-icon {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
+        font-size: 3rem;
+        margin-bottom: 1rem;
     }
 
-    .cta-container {
-        text-align: center;
-        padding: 2rem 0;
+    .feature-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: #111827;
     }
-    </style>
-    """,
+
+    .feature-description {
+        font-size: 1rem;
+        color: #6b7280;
+        line-height: 1.7;
+    }
+
+    /* ==================================================
+       FOOTER
+    ================================================== */
+
+    .footer {
+        text-align: center;
+        color: #9ca3af;
+        padding: 2rem 0 1rem 0;
+        font-size: 0.9rem;
+    }
+
+</style>
+"""
+
+
+# ======================================================
+# HELPER FUNCTIONS
+# ======================================================
+def render_feature_card(icon: str, title: str, description: str) -> None:
+    """Renderiza una tarjeta de funcionalidad."""
+
+    st.markdown(
+        f"""
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                {icon}
+            </div>
+
+            <div class="feature-title">
+                {title}
+            </div>
+
+            <div class="feature-description">
+                {description}
+            </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# ======================================================
+# APPLY CUSTOM CSS
+# ======================================================
+st.markdown(
+    CUSTOM_CSS,
     unsafe_allow_html=True,
 )
 
@@ -60,101 +171,65 @@ st.markdown(
 # ======================================================
 st.markdown(
     """
-    <div class="hero">
-        <h1>Gestión Inteligente de Ventas</h1>
-        <p>
-            Visualiza, analiza y toma decisiones
-            con datos en tiempo real.
+    <div class="hero-container">
+
+        <h1 class="hero-title">
+            Gestión Inteligente de Ventas
+        </h1>
+
+        <p class="hero-subtitle">
+            Visualiza métricas, analiza tendencias y toma
+            decisiones estratégicas con datos en tiempo real.
         </p>
+
     </div>
     """,
     unsafe_allow_html=True,
 )
 
 # ======================================================
-# CTA SECTION
+# CTA BUTTON
 # ======================================================
-st.markdown(
-    '<div class="cta-container">',
-    unsafe_allow_html=True,
-)
+_, center_col, _ = st.columns([1, 1, 1])
 
-col1, col2, col3 = st.columns([1, 1, 1])
-
-with col2:
-    if st.button(
+with center_col:
+    login_clicked = st.button(
         "🔐 Iniciar Sesión",
         type="primary",
         use_container_width=True,
-    ):
-        st.switch_page("pages/2_login.py")
+    )
 
-st.markdown(
-    "</div>",
-    unsafe_allow_html=True,
-)
+    if login_clicked:
+        st.switch_page("pages/2_login.py")
 
 st.divider()
 
 # ======================================================
 # FEATURES SECTION
 # ======================================================
-st.subheader("¿Qué puedes hacer?")
+st.subheader("✨ Funcionalidades principales")
 
-c1, c2, c3 = st.columns(3)
-with c1:
-    st.markdown(
-        """
-        <div class="feature-card">
-            <div class="feature-icon">📊</div>
+columns = st.columns(3)
 
-            <h4>Dashboard Interactivo</h4>
-
-            <p>
-                Métricas clave y gráficos dinámicos
-                filtrables por período y categoría.
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-with c2:
-    st.markdown(
-        """
-        <div class="feature-card">
-            <div class="feature-icon">🔐</div>
-
-            <h4>Autenticación Segura</h4>
-
-            <p>
-                Sistema de usuarios con registro,
-                login y recuperación de contraseña.
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-with c3:
-    st.markdown(
-        """
-        <div class="feature-card">
-            <div class="feature-icon">⚡</div>
-
-            <h4>Respuesta en Tiempo Real</h4>
-
-            <p>
-                Datos generados al vuelo con
-                visualizaciones rápidas y responsivas.
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+for column, feature in zip(columns, FEATURES):
+    with column:
+        render_feature_card(
+            icon=feature["icon"],
+            title=feature["title"],
+            description=feature["description"],
+        )
 
 # ======================================================
 # FOOTER
 # ======================================================
 st.divider()
 
-st.caption("© 2026 · Dashboard de Ventas · " "Todos los derechos reservados")
+st.markdown(
+    """
+    <div class="footer">
+        © 2026 · Dashboard de Ventas ·
+        Todos los derechos reservados
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
