@@ -112,6 +112,4 @@ st.dataframe(
 )
 
 st.markdown("---")
-st.caption(
-    f"Dashboard updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-)
+st.caption(f"Dashboard updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

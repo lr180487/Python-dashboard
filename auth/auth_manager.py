@@ -88,9 +88,7 @@ def render_register(authenticator, credentials, config=None) -> None:
 def render_forgot_password(authenticator, config=None) -> None:
     st.subheader("Recover password")
     try:
-        username, email, new_password = authenticator.forgot_password(
-            location="main"
-        )
+        username, email, new_password = authenticator.forgot_password(location="main")
         if username and new_password:
             update_password(username, new_password)
             st.success(f"New password generated: {new_password}")

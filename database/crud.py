@@ -91,9 +91,13 @@ def get_ventas_por_categoria(db: Session, categoria: str) -> List[Venta]:
 
 def get_resumen_ventas(db: Session) -> List:
     """Get sales summary by category."""
-    return db.query(
-        Venta.categoria,
-        func.sum(Venta.ventas).label("total_ventas"),
-        func.sum(Venta.unidades).label("total_unidades"),
-        func.sum(Venta.clientes).label("total_clientes"),
-    ).group_by(Venta.categoria).all()
+    return (
+        db.query(
+            Venta.categoria,
+            func.sum(Venta.ventas).label("total_ventas"),
+            func.sum(Venta.unidades).label("total_unidades"),
+            func.sum(Venta.clientes).label("total_clientes"),
+        )
+        .group_by(Venta.categoria)
+        .all()
+    )
