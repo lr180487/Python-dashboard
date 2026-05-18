@@ -102,7 +102,6 @@ st.divider()
 st.subheader("¿Qué puedes hacer?")
 
 c1, c2, c3 = st.columns(3)
-
 with c1:
     st.markdown(
         """
@@ -119,7 +118,6 @@ with c1:
         """,
         unsafe_allow_html=True,
     )
-
 with c2:
     st.markdown(
         """
