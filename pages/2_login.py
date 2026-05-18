@@ -1,45 +1,181 @@
-"""Página dedicada de inicio de sesión, registro y recuperación."""
+"""Página de autenticación: login, registro y recuperación."""
 
+# ======================================================
+# IMPORTS
+# ======================================================
 import streamlit as st
 
-from auth.auth_manager import get_authenticator, render_forgot_password, render_register
+from auth.auth_manager import (
+    get_authenticator,
+    render_forgot_password,
+    render_register,
+)
 
-st.set_page_config(page_title="Iniciar Sesión", page_icon="🔐", layout="centered")
+# ======================================================
+# CONSTANTS
+# ======================================================
+DASHBOARD_PAGE = "pages/3_dashboard.py"
 
-# ── Si ya está autenticado, mandar al dashboard ──
-if st.session_state.get("authentication_status"):
-    st.switch_page("pages/3_dashboard.py")
+# ======================================================
+# PAGE STYLES
+# ======================================================
+CUSTOM_CSS = """
+<style>
+.auth-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
 
-st.title("🔐 Acceso al Sistema")
+.auth-title {
+    text-align: center;
+    margin-bottom: 1rem;
+}
 
-authenticator, credentials = get_authenticator()
+.auth-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+}
+</style>
+"""
 
-# Intentar login silencioso por cookie primero
-authenticator.login(location="unrendered")
 
-# Si después del silencioso sigue sin auth, renderizar formulario
-if not st.session_state.get("authentication_status"):
-    authenticator.login(location="main")
+# ======================================================
+# HELPERS
+# ======================================================
+def apply_custom_styles() -> None:
+    """Apply custom styles to auth page."""
 
-# Leer estado post-submit
-authentication_status = st.session_state.get("authentication_status")
+    st.markdown(
+        CUSTOM_CSS,
+        unsafe_allow_html=True,
+    )
 
-if authentication_status is True:
-    st.success("¡Inicio de sesión exitoso!")
+
+def redirect_if_authenticated() -> None:
+    """Redirect authenticated users to dashboard."""
+
+    if st.session_state.get("authentication_status"):
+        st.switch_page(DASHBOARD_PAGE)
+
+
+def render_header() -> None:
+    """Render authentication page header."""
+
+    st.markdown(
+        """
+        <div class="auth-container">
+
+            <h1 class="auth-title">
+                🔐 Acceso al Sistema
+            </h1>
+
+            <p class="auth-subtitle">
+                Inicia sesión para acceder al dashboard
+            </p>
+
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_login(authenticator) -> None:
+    """Render login flow."""
+
+    # ==================================================
+    # LOGIN SILENCIOSO POR COOKIE
+    # ==================================================
+    authenticator.login(location="unrendered")
+
+    # ==================================================
+    # FORM LOGIN
+    # ==================================================
+    if not st.session_state.get("authentication_status"):
+        authenticator.login(location="main")
+
+
+def render_auth_status() -> None:
+    """Render authentication result messages."""
+
+    authentication_status = st.session_state.get("authentication_status")
+
+    if authentication_status is True:
+        render_success_state()
+
+    elif authentication_status is False:
+        st.error("❌ Usuario o contraseña incorrectos")
+
+    elif authentication_status is None:
+        st.info("ℹ️ Ingresa tus credenciales para continuar")
+
+
+def render_success_state() -> None:
+    """Render successful authentication state."""
+
+    st.success("✅ Inicio de sesión exitoso")
+
     st.balloons()
-    if st.button("Ir al Dashboard →"):
-        st.switch_page("pages/3_dashboard.py")
 
-elif authentication_status is False:
-    st.error("Usuario o contraseña incorrectos")
+    if st.button(
+        "Ir al Dashboard →",
+        type="primary",
+        use_container_width=True,
+    ):
+        st.switch_page(DASHBOARD_PAGE)
 
-elif authentication_status is None:
-    st.info("Ingresa tus credenciales para continuar")
 
-# Tabs para registro / recuperación (visibles siempre para UX)
-st.divider()
-tab_register, tab_forgot = st.tabs(["📝 Registrarse", "🔑 Recuperar Contraseña"])
-with tab_register:
-    render_register(authenticator, credentials)
-with tab_forgot:
-    render_forgot_password(authenticator)
+def render_auth_tabs(
+    authenticator,
+    credentials,
+) -> None:
+    """Render register and forgot password tabs."""
+
+    st.divider()
+
+    tab_register, tab_forgot = st.tabs(
+        [
+            "📝 Registrarse",
+            "🔑 Recuperar Contraseña",
+        ]
+    )
+
+    with tab_register:
+        render_register(
+            authenticator,
+            credentials,
+        )
+
+    with tab_forgot:
+        render_forgot_password(authenticator)
+
+
+# ======================================================
+# MAIN
+# ======================================================
+def main() -> None:
+    """Main authentication page."""
+
+    apply_custom_styles()
+
+    redirect_if_authenticated()
+
+    render_header()
+
+    authenticator, credentials = get_authenticator()
+
+    render_login(authenticator)
+
+    render_auth_status()
+
+    render_auth_tabs(
+        authenticator,
+        credentials,
+    )
+
+
+# ======================================================
+# ENTRYPOINT
+# ======================================================
+if __name__ == "__main__":
+    main()
