@@ -5,16 +5,10 @@
 
 Aplicación multipágina con Streamlit.
 
-Flujo de navegación:
-    1. Landing Page       → Usuario no autenticado
-    2. Login Page         → Usuario no autenticado
-    3. Dashboard Page     → Usuario autenticado
-
-Características:
-    - Carga automática de variables de entorno
-    - Inicialización de base de datos
-    - Navegación dinámica basada en autenticación
-    - Arquitectura limpia y mantenible
+Flujo:
+    1. Landing Page
+    2. Login
+    3. Dashboard autenticado
 """
 
 # =========================================================
@@ -42,7 +36,7 @@ ENV_PATH = BASE_DIR / ".env"
 load_dotenv(ENV_PATH)
 
 # =========================================================
-# ⚙️ STREAMLIT CONFIGURATION
+# ⚙️ STREAMLIT CONFIG
 # =========================================================
 st.set_page_config(
     page_title="Python Dashboard",
@@ -50,6 +44,15 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# =========================================================
+# 🔐 SESSION STATE DEFAULTS
+# =========================================================
+if "authentication_status" not in st.session_state:
+    st.session_state.authentication_status = False
+
+if "db_initialized" not in st.session_state:
+    st.session_state.db_initialized = False
 
 # =========================================================
 # 📄 PAGE DEFINITIONS
@@ -86,57 +89,57 @@ PRIVATE_PAGES = [
 
 
 # =========================================================
-# 🔐 AUTHENTICATION HELPER
+# 🔐 AUTHENTICATION
 # =========================================================
 def is_authenticated() -> bool:
-    """
-    Verifica si el usuario está autenticado.
+    """Check authentication status."""
 
-    Returns:
-        bool: Estado de autenticación.
-    """
-    return bool(st.session_state.get("authentication_status"))
+    return bool(
+        st.session_state.get(
+            "authentication_status",
+            False,
+        )
+    )
 
 
 # =========================================================
-# 🧭 CREATE NAVIGATION
+# 🧭 NAVIGATION
 # =========================================================
 def create_navigation():
-    """
-    Genera navegación dinámica según autenticación.
+    """Create dynamic navigation."""
 
-    Returns:
-        streamlit.navigation: Navegación activa.
-    """
     pages = PRIVATE_PAGES if is_authenticated() else PUBLIC_PAGES
+
     return st.navigation(pages)
 
 
 # =========================================================
-# 🗄️ INITIALIZE APPLICATION
+# 🗄️ INITIALIZE APP
 # =========================================================
 def initialize_app() -> None:
-    """
-    Inicializa componentes principales de la aplicación.
-    """
-    init_database()
+    """Initialize application once."""
+
+    if not st.session_state.db_initialized:
+        init_database()
+
+        st.session_state.db_initialized = True
 
 
 # =========================================================
-# 🚀 MAIN APPLICATION
+# 🚀 MAIN
 # =========================================================
 def main() -> None:
-    """
-    Punto principal de ejecución.
-    """
+    """Main entrypoint."""
+
     initialize_app()
 
     navigation = create_navigation()
+
     navigation.run()
 
 
 # =========================================================
-# ▶️ APPLICATION ENTRYPOINT
+# ▶️ ENTRYPOINT
 # =========================================================
 if __name__ == "__main__":
     main()

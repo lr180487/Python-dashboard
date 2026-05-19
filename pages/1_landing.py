@@ -6,7 +6,7 @@
 import streamlit as st
 
 # ======================================================
-# CONSTANTS
+# CSS
 # ======================================================
 CUSTOM_CSS = """
 <style>
@@ -31,7 +31,7 @@ CUSTOM_CSS = """
     border-radius: 12px;
     padding: 1.5rem;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     height: 100%;
 }
 
@@ -40,20 +40,17 @@ CUSTOM_CSS = """
     margin-bottom: 0.5rem;
 }
 
-.cta-container {
-    text-align: center;
-    padding: 2rem 0;
-}
-
 .footer {
     text-align: center;
     color: #888;
-    font-size: 0.9rem;
     padding-top: 1rem;
 }
 </style>
 """
 
+# ======================================================
+# FEATURES
+# ======================================================
 FEATURES = [
     {
         "icon": "📊",
@@ -65,16 +62,12 @@ FEATURES = [
     {
         "icon": "🔐",
         "title": "Autenticación Segura",
-        "description": (
-            "Sistema de usuarios con registro, " "login y recuperación de contraseña."
-        ),
+        "description": ("Sistema de usuarios con registro " "y login seguro."),
     },
     {
         "icon": "⚡",
         "title": "Tiempo Real",
-        "description": (
-            "Datos procesados instantáneamente " "con visualizaciones responsivas."
-        ),
+        "description": ("Visualizaciones rápidas " "y procesamiento instantáneo."),
     },
 ]
 
@@ -83,15 +76,14 @@ FEATURES = [
 # STYLES
 # ======================================================
 def apply_custom_css() -> None:
-    """Apply custom styles."""
-
+    """Apply custom CSS."""
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
 # ======================================================
-# HERO SECTION
+# HERO
 # ======================================================
-def render_hero_section() -> None:
+def render_hero() -> None:
     """Render hero section."""
 
     st.markdown(
@@ -110,15 +102,10 @@ def render_hero_section() -> None:
 
 
 # ======================================================
-# CTA BUTTON
+# CTA
 # ======================================================
-def render_cta_button() -> None:
-    """Render login call-to-action button."""
-
-    st.markdown(
-        '<div class="cta-container">',
-        unsafe_allow_html=True,
-    )
+def render_cta() -> None:
+    """Render CTA button."""
 
     _, center_col, _ = st.columns([1, 1, 1])
 
@@ -130,8 +117,6 @@ def render_cta_button() -> None:
         ):
             st.switch_page("pages/2_login.py")
 
-    st.markdown("</div>", unsafe_allow_html=True)
-
 
 # ======================================================
 # FEATURE CARD
@@ -141,20 +126,16 @@ def render_feature_card(
     title: str,
     description: str,
 ) -> None:
-    """Render reusable feature card."""
+    """Render feature card."""
 
     st.markdown(
         f"""
         <div class="feature-card">
-
-            <div class="feature-icon">
-                {icon}
-            </div>
+            <div class="feature-icon">{icon}</div>
 
             <h4>{title}</h4>
 
             <p>{description}</p>
-
         </div>
         """,
         unsafe_allow_html=True,
@@ -164,15 +145,15 @@ def render_feature_card(
 # ======================================================
 # FEATURES SECTION
 # ======================================================
-def render_features_section() -> None:
+def render_features() -> None:
     """Render features section."""
 
     st.subheader("¿Qué puedes hacer?")
 
-    columns = st.columns(3)
+    cols = st.columns(3)
 
-    for column, feature in zip(columns, FEATURES):
-        with column:
+    for col, feature in zip(cols, FEATURES):
+        with col:
             render_feature_card(
                 feature["icon"],
                 feature["title"],
@@ -184,15 +165,14 @@ def render_features_section() -> None:
 # FOOTER
 # ======================================================
 def render_footer() -> None:
-    """Render footer section."""
+    """Render footer."""
 
     st.divider()
 
     st.markdown(
         """
         <div class="footer">
-            © 2026 · Dashboard de Ventas ·
-            Todos los derechos reservados
+            © 2026 · Dashboard de Ventas
         </div>
         """,
         unsafe_allow_html=True,
@@ -203,17 +183,17 @@ def render_footer() -> None:
 # MAIN
 # ======================================================
 def main() -> None:
-    """Main application."""
+    """Main app."""
 
     apply_custom_css()
 
-    render_hero_section()
+    render_hero()
 
-    render_cta_button()
+    render_cta()
 
     st.divider()
 
-    render_features_section()
+    render_features()
 
     render_footer()
 
