@@ -84,9 +84,7 @@ st.subheader("Visualizations")
 col_left, col_right = st.columns(2)
 
 with col_left:
-    ventas_por_categoria = (
-        df_filtrado.groupby("Categoría")["Ventas"].sum().reset_index()
-    )
+    ventas_por_categoria = df_filtrado.groupby("Categoría")["Ventas"].sum().reset_index()
     fig_pie = px.pie(
         ventas_por_categoria,
         values="Ventas",

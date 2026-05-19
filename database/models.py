@@ -103,11 +103,7 @@ class User(Base):
     # =====================================================
     def __repr__(self) -> str:
         return (
-            f"User("
-            f"id={self.id}, "
-            f"username='{self.username}', "
-            f"email='{self.email}'"
-            f")"
+            f"User(" f"id={self.id}, " f"username='{self.username}', " f"email='{self.email}'" f")"
         )
 
 
