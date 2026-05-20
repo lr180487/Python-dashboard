@@ -147,7 +147,7 @@ jobs:
       # ===================================================
       - name: 🚀 Trigger Render Deploy
         env:
-          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.https://api.render.com/deploy/srv-d83l5o8g4nts73diptig?key=q0bvXPhex40 }}
         run: |
           if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
             echo "❌ Missing RENDER_DEPLOY_HOOK_URL secret"
