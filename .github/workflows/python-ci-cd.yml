@@ -121,7 +121,7 @@ jobs:
           fi
 
   # =======================================================
-  # 🚀 DEPLOY TO RENDER
+  # 🚀 OPTIONAL RENDER DEPLOY
   # =======================================================
   deploy:
     name: 🚀 Deploy to Render
@@ -130,6 +130,9 @@ jobs:
 
     needs: test
 
+    # =====================================================
+    # ONLY MAIN PUSH
+    # =====================================================
     if: |
       github.ref == 'refs/heads/main' &&
       github.event_name == 'push'
@@ -143,20 +146,52 @@ jobs:
         uses: actions/checkout@v4
 
       # ===================================================
-      # 🚀 TRIGGER RENDER DEPLOY
+      # 🔍 CHECK SECRET
       # ===================================================
-      - name: 🚀 Trigger Render Deploy
+      - name: 🔍 Check Render Secret
+        id: render_secret_check
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
           if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
-            echo "❌ Missing RENDER_DEPLOY_HOOK_URL secret"
-            exit 1
+            echo "has_secret=false" >> $GITHUB_OUTPUT
+            echo "⚠️ RENDER_DEPLOY_HOOK_URL not configured"
+          else
+            echo "has_secret=true" >> $GITHUB_OUTPUT
+            echo "✅ Render deploy secret found"
           fi
+
+      # ===================================================
+      # 🚀 TRIGGER RENDER DEPLOY
+      # ===================================================
+      - name: 🚀 Trigger Render Deploy
+        if: steps.render_secret_check.outputs.has_secret == 'true'
+
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+        run: |
 
           echo "🚀 Triggering Render deployment..."
 
-          curl --fail --silent --show-error \
-            -X POST "$RENDER_DEPLOY_HOOK_URL"
+          response=$(curl \
+            --silent \
+            --output /dev/null \
+            --write-out "%{http_code}" \
+            --request POST \
+            "$RENDER_DEPLOY_HOOK_URL")
 
-          echo "✅ Render deployment triggered successfully"
+          if [ "$response" -ge 200 ] && [ "$response" -lt 300 ]; then
+            echo "✅ Render deployment triggered successfully"
+          else
+            echo "❌ Render deployment failed with HTTP status $response"
+            exit 1
+          fi
+
+      # ===================================================
+      # ⏭️ SKIP DEPLOY
+      # ===================================================
+      - name: ⏭️ Skip Deploy
+        if: steps.render_secret_check.outputs.has_secret != 'true'
+        run: |
+          echo "⚠️ Deploy skipped because RENDER_DEPLOY_HOOK_URL is missing"
