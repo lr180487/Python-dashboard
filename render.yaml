@@ -1,0 +1,96 @@
+# =========================================================
+# 🚀 RENDER BLUEPRINT
+# =========================================================
+
+services:
+  # =======================================================
+  # 🐍 STREAMLIT APPLICATION
+  # =======================================================
+  - type: web
+    name: python-dashboard
+
+    runtime: python
+
+    plan: free
+
+    region: oregon
+
+    branch: main
+
+    rootDir: .
+
+    autoDeploy: true
+
+    # =====================================================
+    # 🔨 BUILD COMMAND
+    # =====================================================
+    buildCommand: |
+      python -m pip install --upgrade pip setuptools wheel
+      pip install -r requirements.txt
+
+    # =====================================================
+    # ▶️ START COMMAND
+    # =====================================================
+    startCommand: |
+      streamlit run app.py \
+      --server.port=$PORT \
+      --server.address=0.0.0.0
+
+    # =====================================================
+    # 🌎 ENVIRONMENT VARIABLES
+    # =====================================================
+    envVars:
+      # ---------------------------------------------------
+      # 🐍 Python
+      # ---------------------------------------------------
+      - key: PYTHON_VERSION
+        value: 3.12.10
+
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+      - key: PIP_NO_CACHE_DIR
+        value: "1"
+
+      # ---------------------------------------------------
+      # 🚀 Streamlit
+      # ---------------------------------------------------
+      - key: STREAMLIT_SERVER_HEADLESS
+        value: "true"
+
+      - key: STREAMLIT_BROWSER_GATHER_USAGE_STATS
+        value: "false"
+
+      # ---------------------------------------------------
+      # 🔐 Optional Secrets
+      # ---------------------------------------------------
+      # sync: false evita errores si no existen
+      # configurados en Render.
+      # ---------------------------------------------------
+      - key: DATABASE_URL
+        sync: false
+
+      - key: SECRET_KEY
+        sync: false
+
+      - key: ADMIN_USERNAME
+        sync: false
+
+      - key: ADMIN_PASSWORD
+        sync: false
+
+      - key: OPENAI_API_KEY
+        sync: false
+
+    # =====================================================
+    # ❤️ HEALTH CHECK
+    # =====================================================
+    healthCheckPath: /
+
+    # =====================================================
+    # 💾 OPTIONAL DISK STORAGE
+    # =====================================================
+    disk:
+      name: streamlit-data
+      mountPath: /data
+      sizeGB: 1
