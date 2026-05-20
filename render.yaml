@@ -1,0 +1,91 @@
+# =========================================================
+# 🚀 RENDER CONFIG - PYTHON APP
+# =========================================================
+
+services:
+  # =======================================================
+  # 🌐 WEB SERVICE
+  # =======================================================
+  - type: web
+
+    # Nombre del servicio en Render
+    name: python-dashboard
+
+    # Runtime
+    runtime: python
+
+    # Región
+    region: oregon
+
+    # Plan
+    plan: free
+
+    # Branch deploy
+    branch: main
+
+    # Auto deploy
+    autoDeploy: true
+
+    # =====================================================
+    # 🐍 BUILD COMMAND
+    # =====================================================
+    buildCommand: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+
+    # =====================================================
+    # ▶ START COMMAND
+    # =====================================================
+    # FASTAPI
+    # startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+
+    # FLASK
+    # startCommand: gunicorn app:app
+
+    # DJANGO
+    # startCommand: gunicorn config.wsgi:application
+
+    # STREAMLIT
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+
+    # =====================================================
+    # 🌎 ENV VARIABLES
+    # =====================================================
+    envVars:
+
+      # Python version
+      - key: PYTHON_VERSION
+        value: 3.12.10
+
+      # Environment
+      - key: ENVIRONMENT
+        value: production
+
+      # Streamlit config
+      - key: STREAMLIT_SERVER_HEADLESS
+        value: true
+
+      - key: STREAMLIT_BROWSER_GATHER_USAGE_STATS
+        value: false
+
+      # Example database URL
+      # Add real secret values in Render Dashboard
+      - key: DATABASE_URL
+        sync: false
+
+      # Secret key example
+      - key: SECRET_KEY
+        sync: false
+
+# =========================================================
+# 🗄 OPTIONAL POSTGRES DATABASE
+# =========================================================
+
+databases:
+  - name: python-dashboard-db
+
+    plan: free
+
+    databaseName: python_dashboard
+
+    user: python_dashboard_user
