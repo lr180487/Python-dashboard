@@ -6,6 +6,7 @@ from .auth_manager import (
     update_password,
 )
 
+
 __all__ = [
     "get_authenticator",
     "render_register",

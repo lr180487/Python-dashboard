@@ -17,6 +17,7 @@ from database.crud import (
 )
 from database.session import db_session
 
+
 # =========================================================
 # 📁 CONFIG
 # =========================================================

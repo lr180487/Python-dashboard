@@ -6,6 +6,7 @@ from .crud import create_user
 from .models import Base, User
 from .session import db_session, engine
 
+
 _initialized = False
 
 
@@ -34,12 +35,8 @@ def init_database():
         admin_hash = bcrypt.hashpw("admin123".encode(), bcrypt.gensalt()).decode()
         user_hash = bcrypt.hashpw("user123".encode(), bcrypt.gensalt()).decode()
 
-        create_user(
-            db, "admin", "admin@example.com", "Administrador", admin_hash, "admin,user"
-        )
-        create_user(
-            db, "usuario", "usuario@example.com", "Usuario Demo", user_hash, "user"
-        )
+        create_user(db, "admin", "admin@example.com", "Administrador", admin_hash, "admin,user")
+        create_user(db, "usuario", "usuario@example.com", "Usuario Demo", user_hash, "user")
 
         print("[INIT] Usuarios creados: admin / usuario")
 

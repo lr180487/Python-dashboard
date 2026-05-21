@@ -1,12 +1,13 @@
 """Sales Dashboard with Streamlit."""
 
-import random
 from datetime import datetime, timedelta
+import random
 
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go  # noqa: F401
 import streamlit as st
+
 
 st.set_page_config(
     page_title="Sales Dashboard",

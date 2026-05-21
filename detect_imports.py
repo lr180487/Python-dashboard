@@ -10,6 +10,7 @@ import ast
 import os
 from pathlib import Path
 
+
 # Mapeo de módulos → paquetes pip (puedes ampliarlo)
 IMPORT_TO_PACKAGE = {
     "yaml": "pyyaml",

@@ -40,9 +40,7 @@ def create_user(
     return user
 
 
-def update_user_password(
-    db: Session, username: str, password_hash: str
-) -> Optional[User]:
+def update_user_password(db: Session, username: str, password_hash: str) -> Optional[User]:
     """Update user password."""
     user = get_user_by_username(db, username)
     if user:

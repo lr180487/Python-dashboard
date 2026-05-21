@@ -1,19 +1,43 @@
 # =========================================================
+# 🐍 PYPROJECT.TOML
+# Centralized configuration:
+# - Black
+# - isort
+# - Flake8
+# - Pytest
+# - Build system
+# =========================================================
+
+# =========================================================
 # 🐍 BLACK
 # =========================================================
 [tool.black]
-line-length = 90
-target-version = ["py312"]
+
+line-length = 100
+
+target-version = [
+    "py312",
+]
+
 include = '\.pyi?$'
 
 exclude = '''
 /(
     \.git
+  | \.github
+  | \.mypy_cache
+  | \.pytest_cache
+  | \.ruff_cache
+  | \.tox
   | \.venv
   | venv
+  | env
+  | ENV
   | build
   | dist
+  | site
   | migrations
+  | alembic/versions
   | __pycache__
 )/
 '''
@@ -22,53 +46,125 @@ exclude = '''
 # 📚 ISORT
 # =========================================================
 [tool.isort]
+
 profile = "black"
-line_length = 95
+
+line_length = 100
+
 multi_line_output = 3
+
 include_trailing_comma = true
+
 force_grid_wrap = 0
+
 use_parentheses = true
+
 ensure_newline_before_comments = true
+
+combine_as_imports = true
+
+force_sort_within_sections = true
+
+lines_after_imports = 2
+
+skip = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "alembic/versions",
+]
 
 # =========================================================
 # 🔎 FLAKE8
 # =========================================================
 [tool.flake8]
+
 max-line-length = 100
+
+max-complexity = 12
+
+statistics = true
+
+show-source = true
+
+count = true
+
 extend-ignore = [
-    "E203",
-    "W503",
-    "E501"
+    "E203",  # Black compatibility
+    "W503",  # Black compatibility
+]
+
+exclude = [
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".venv",
+    "venv",
+    "build",
+    "dist",
+    "alembic/versions",
 ]
 
 per-file-ignores = [
     "__init__.py:F401",
-    "pages/*.py:E501",
+    "tests/*:S101",
 ]
-exclude = [
-    ".git",
-    "__pycache__",
-    "venv",
-    ".venv",
-    "alembic"
-]
+
 # =========================================================
 # 🧪 PYTEST
 # =========================================================
 [tool.pytest.ini_options]
+
 pythonpath = [
-    "."
+    ".",
 ]
 
 testpaths = [
-    "tests"
+    "tests",
 ]
 
-addopts = "-v --tb=short"
+python_files = [
+    "test_*.py",
+]
+
+python_classes = [
+    "Test*",
+]
+
+python_functions = [
+    "test_*",
+]
+
+addopts = """
+-v
+--tb=short
+--disable-warnings
+--strict-markers
+"""
+
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
 
 # =========================================================
-# 🐍 PYTHON BUILD SYSTEM
+# 📦 SETUPTOOLS
+# =========================================================
+[tool.setuptools]
+
+include-package-data = true
+
+# =========================================================
+# 🐍 BUILD SYSTEM
 # =========================================================
 [build-system]
-requires = ["setuptools>=61.0"]
+
+requires = [
+    "setuptools>=68",
+    "wheel",
+]
+
 build-backend = "setuptools.build_meta"
