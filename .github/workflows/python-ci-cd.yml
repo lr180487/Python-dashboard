@@ -130,9 +130,6 @@ jobs:
 
     needs: test
 
-    # =====================================================
-    # ONLY MAIN PUSH
-    # =====================================================
     if: |
       github.ref == 'refs/heads/main' &&
       github.event_name == 'push'
@@ -146,12 +143,14 @@ jobs:
         uses: actions/checkout@v4
 
       # ===================================================
-      # 🔍 CHECK SECRET
+      # 🔍 CHECK RENDER SECRET
       # ===================================================
       - name: 🔍 Check Render Secret
         id: render_secret_check
+
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
         run: |
           if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
             echo "has_secret=false" >> $GITHUB_OUTPUT
@@ -165,13 +164,13 @@ jobs:
       # 🚀 TRIGGER RENDER DEPLOY
       # ===================================================
       - name: 🚀 Trigger Render Deploy
+
         if: steps.render_secret_check.outputs.has_secret == 'true'
 
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
 
         run: |
-
           echo "🚀 Triggering Render deployment..."
 
           response=$(curl \
@@ -181,6 +180,9 @@ jobs:
             --request POST \
             "$RENDER_DEPLOY_HOOK_URL")
 
+          # ===============================================
+          # VALIDATE RESPONSE
+          # ===============================================
           if [ "$response" -ge 200 ] && [ "$response" -lt 300 ]; then
             echo "✅ Render deployment triggered successfully"
           else
@@ -192,6 +194,8 @@ jobs:
       # ⏭️ SKIP DEPLOY
       # ===================================================
       - name: ⏭️ Skip Deploy
+
         if: steps.render_secret_check.outputs.has_secret != 'true'
+
         run: |
           echo "⚠️ Deploy skipped because RENDER_DEPLOY_HOOK_URL is missing"
