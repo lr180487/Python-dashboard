@@ -18,6 +18,8 @@ IMPORT_TO_PACKAGE = {
     "sklearn": "scikit-learn",
     "psycopg": "psycopg[binary]",
     "cv2": "opencv-python",
+    "dotenv": "python-dotenv",
+    "streamlit_authenticator": "streamlit-authenticator",
 }
 
 # módulos estándar de Python (no incluir)
@@ -90,12 +92,24 @@ def scan_project(directory):
     return all_imports
 
 
-def clean_imports(imports):
-    """Filtra stdlib y convierte nombres."""
+def clean_imports(imports, directory):
+    """Filtra stdlib, módulos locales y convierte nombres."""
     result = set()
 
+    # Obtener stdlib dinámicamente si es posible
+    import sys
+
+    stdlib_set = set(STDLIB)
+    stdlib_set.update(sys.builtin_module_names)
+    if hasattr(sys, "stdlib_module_names"):
+        stdlib_set.update(sys.stdlib_module_names)
+
     for imp in imports:
-        if imp in STDLIB:
+        if imp in stdlib_set:
+            continue
+
+        # Filtrar módulos/paquetes locales en la carpeta del proyecto
+        if (directory / imp).exists() or (directory / f"{imp}.py").exists():
             continue
 
         package = IMPORT_TO_PACKAGE.get(imp, imp)
@@ -121,7 +135,7 @@ if __name__ == "__main__":
 
     print(f"Imports detectados: {imports}")
 
-    packages = clean_imports(imports)
+    packages = clean_imports(imports, project_path)
 
     print(f"Paquetes finales: {packages}")
 
