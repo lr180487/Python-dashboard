@@ -122,6 +122,9 @@ def hash_password(password: str) -> str:
     Hash plain password using bcrypt.
     """
 
+    if password.startswith(("$2a$", "$2b$", "$2y$")) and len(password) == 60:
+        return password
+
     return bcrypt.hashpw(
         password.encode("utf-8"),
         bcrypt.gensalt(),

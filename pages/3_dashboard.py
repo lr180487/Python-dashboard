@@ -11,8 +11,6 @@ from data.generator import generar_datos
 from utils.config import CATEGORIAS, PERIODOS, DashboardConfig
 from utils.filters import filtrar_por_categoria, filtrar_por_periodo
 
-st.set_page_config(page_title="Dashboard de Ventas", layout="wide", page_icon="📊")
-
 # ── Guardia de seguridad ──
 if not st.session_state.get("authentication_status"):
     st.warning("Debes iniciar sesión para acceder al dashboard.")

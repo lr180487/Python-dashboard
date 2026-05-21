@@ -63,8 +63,21 @@ def extract_imports(file_path):
 def scan_project(directory):
     """Escanea todos los .py del proyecto."""
     all_imports = set()
+    ignored_dirs = {
+        "venv",
+        ".venv",
+        ".git",
+        ".pytest_cache",
+        "__pycache__",
+        "build",
+        "dist",
+        "alembic",
+    }
 
-    for root, _, files in os.walk(directory):
+    for root, dirs, files in os.walk(directory):
+        # Modificar dirs in-place para evitar que os.walk entre en carpetas ignoradas
+        dirs[:] = [d for d in dirs if d not in ignored_dirs]
+
         for file in files:
             if file.endswith(".py"):
                 path = os.path.join(root, file)
@@ -96,13 +109,13 @@ def generate_requirements_in(packages, output="requirements.in"):
         for pkg in packages:
             f.write(pkg + "\n")
 
-    print(f"✔ requirements.in generado con {len(packages)} paquetes")
+    print(f"[OK] requirements.in generado con {len(packages)} paquetes")
 
 
 if __name__ == "__main__":
     project_path = Path(".")  # carpeta actual
 
-    print("🔍 Escaneando proyecto...")
+    print("[SCAN] Escaneando proyecto...")
     imports = scan_project(project_path)
 
     print(f"Imports detectados: {imports}")
