@@ -17,6 +17,7 @@ exclude: |
       venv/|
       \.venv/|
       env/|
+      ENV/|
       build/|
       dist/|
       site/|
@@ -43,8 +44,6 @@ repos:
     hooks:
       - id: black
         language_version: python3.12
-        args:
-          - --config=pyproject.toml
 
   # ======================================================
   # 📚 ISORT - IMPORT SORTER
@@ -66,8 +65,6 @@ repos:
         additional_dependencies:
           - flake8-bugbear
           - flake8-pyproject
-        args:
-          - --config=pyproject.toml
 
   # ======================================================
   # 🧪 PYTEST
@@ -79,7 +76,8 @@ repos:
         entry: pytest
         language: system
         pass_filenames: false
-        stages: [pre-push]
+        stages:
+          - pre-push
 
   # ======================================================
   # 🛠️ COMMON FILE FIXES
@@ -88,13 +86,13 @@ repos:
     rev: v5.0.0
     hooks:
 
-      # Remove trailing spaces
+      # Remove trailing whitespace
       - id: trailing-whitespace
 
       # Ensure newline at EOF
       - id: end-of-file-fixer
 
-      # Normalize mixed line endings
+      # Normalize line endings
       - id: mixed-line-ending
         args:
           - --fix=lf
@@ -117,7 +115,7 @@ repos:
       # Detect debug statements
       - id: debug-statements
 
-      # Prevent huge files
+      # Prevent large files
       - id: check-added-large-files
         args:
           - --maxkb=2048
@@ -125,8 +123,8 @@ repos:
       # Validate symlinks
       - id: check-symlinks
 
-      # Prevent case conflicts
+      # Prevent filename case conflicts
       - id: check-case-conflict
 
-      # Prevent private keys
+      # Detect private keys
       - id: detect-private-key
