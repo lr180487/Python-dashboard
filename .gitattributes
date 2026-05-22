@@ -1,32 +1,121 @@
 # ======================================================
-# NORMALIZE LINE ENDINGS
+# 🌎 GLOBAL NORMALIZATION
 # ======================================================
 
 * text=auto
 
-# Python
-*.py text eol=lf
+# ======================================================
+# 🐍 PYTHON
+# ======================================================
 
-# YAML
-*.yml text eol=lf
-*.yaml text eol=lf
+*.py      text eol=lf
+*.pyi     text eol=lf
+*.pyx     text eol=lf
 
-# TOML
-*.toml text eol=lf
+# ======================================================
+# 🌐 JAVASCRIPT / TYPESCRIPT
+# ======================================================
 
-# JavaScript
-*.js text eol=lf
+*.js      text eol=lf
+*.mjs     text eol=lf
+*.cjs     text eol=lf
+*.ts      text eol=lf
+*.tsx     text eol=lf
+*.jsx     text eol=lf
 
-# Markdown
-*.md text eol=lf
+# ======================================================
+# ⚙️ CONFIG FILES
+# ======================================================
 
-# TXT
-*.txt text eol=lf
+*.json    text eol=lf
+*.yaml    text eol=lf
+*.yml     text eol=lf
+*.toml    text eol=lf
+*.ini     text eol=lf
+*.cfg     text eol=lf
+*.conf    text eol=lf
+*.env     text eol=lf
 
-# Docker
-Dockerfile text eol=lf
-.dockerfile text eol=lf
+# ======================================================
+# 🐳 DOCKER
+# ======================================================
 
-# Windows scripts
-*.bat text eol=crlf
-*.ps1 text eol=crlf
+Dockerfile        text eol=lf
+*.dockerfile      text eol=lf
+.dockerignore     text eol=lf
+
+# ======================================================
+# ☁️ CI/CD
+# ======================================================
+
+.github/**        text eol=lf
+
+# ======================================================
+# 🐧 SHELL SCRIPTS
+# ======================================================
+
+*.sh      text eol=lf
+*.bash    text eol=lf
+*.zsh     text eol=lf
+
+# ======================================================
+# 🪟 WINDOWS SCRIPTS
+# ======================================================
+
+*.bat     text eol=crlf
+*.cmd     text eol=crlf
+*.ps1     text eol=crlf
+
+# ======================================================
+# 📚 DOCUMENTATION
+# ======================================================
+
+*.md      text eol=lf
+*.txt     text eol=lf
+*.rst     text eol=lf
+
+# ======================================================
+# 🗄️ DATABASE / SQL
+# ======================================================
+
+*.sql     text eol=lf
+
+# ======================================================
+# 🔐 CERTIFICATES / KEYS
+# ======================================================
+
+*.pem     text eol=lf
+*.key     text eol=lf
+*.crt     text eol=lf
+
+# ======================================================
+# 🚫 BINARY FILES
+# (prevent corruption)
+# ======================================================
+
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.webp    binary
+*.ico     binary
+*.pdf     binary
+*.zip     binary
+*.gz      binary
+*.tar     binary
+*.7z      binary
+*.woff    binary
+*.woff2   binary
+*.ttf     binary
+*.otf     binary
+*.mp4     binary
+*.mp3     binary
+*.xlsx    binary
+*.docx    binary
+*.pptx    binary
+
+# ======================================================
+# 🧪 NOTEBOOKS
+# ======================================================
+
+*.ipynb text eol=lf

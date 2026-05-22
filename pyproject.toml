@@ -1,6 +1,6 @@
 # =========================================================
 # 🐍 PYPROJECT.TOML
-# Centralized configuration:
+# Centralized configuration for:
 # - Black
 # - isort
 # - Flake8
@@ -9,19 +9,16 @@
 # =========================================================
 
 # =========================================================
-# 🐍 BLACK
+# 🧹 BLACK
 # =========================================================
 [tool.black]
 
 line-length = 100
-
-target-version = [
-    "py312",
-]
+target-version = ["py312"]
 
 include = '\.pyi?$'
 
-exclude = '''
+extend-exclude = '''
 /(
     \.git
   | \.github
@@ -36,6 +33,7 @@ exclude = '''
   | build
   | dist
   | site
+  | node_modules
   | migrations
   | alembic/versions
   | __pycache__
@@ -52,20 +50,19 @@ profile = "black"
 line_length = 100
 
 multi_line_output = 3
-
 include_trailing_comma = true
-
 force_grid_wrap = 0
-
 use_parentheses = true
 
 ensure_newline_before_comments = true
-
 combine_as_imports = true
-
 force_sort_within_sections = true
 
 lines_after_imports = 2
+
+src_paths = [
+    ".",
+]
 
 skip = [
     ".git",
@@ -74,6 +71,7 @@ skip = [
     "__pycache__",
     "build",
     "dist",
+    "node_modules",
     "alembic/versions",
 ]
 
@@ -83,13 +81,10 @@ skip = [
 [tool.flake8]
 
 max-line-length = 100
-
 max-complexity = 12
 
 statistics = true
-
 show-source = true
-
 count = true
 
 extend-ignore = [
@@ -102,15 +97,18 @@ exclude = [
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
+    ".ruff_cache",
     ".venv",
     "venv",
     "build",
     "dist",
+    "node_modules",
     "alembic/versions",
 ]
 
 per-file-ignores = [
     "__init__.py:F401",
+    "alembic/env.py:E402",
     "tests/*:S101",
 ]
 
@@ -141,9 +139,10 @@ python_functions = [
 
 addopts = """
 -v
+-ra
 --tb=short
---disable-warnings
 --strict-markers
+--disable-warnings
 """
 
 filterwarnings = [
@@ -158,7 +157,7 @@ filterwarnings = [
 include-package-data = true
 
 # =========================================================
-# 🐍 BUILD SYSTEM
+# 🏗️ BUILD SYSTEM
 # =========================================================
 [build-system]
 

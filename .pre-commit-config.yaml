@@ -2,19 +2,35 @@
 # 🚀 PRE-COMMIT CONFIG
 # =========================================================
 
+minimum_pre_commit_version: "4.0.0"
+
 default_language_version:
   python: python3.12
+
+default_stages:
+  - pre-commit
+
+fail_fast: false
 
 exclude: |
   (?x)^(
       venv/|
       \.venv/|
+      env/|
       build/|
       dist/|
-      alembic/versions/|
+      site/|
+      htmlcov/|
+      \.mypy_cache/|
+      \.pytest_cache/|
+      \.ruff_cache/|
+      \.tox/|
       __pycache__/|
       node_modules/|
-      migrations/
+      migrations/|
+      alembic/versions/|
+      coverage.xml|
+      package-lock.json
   )
 
 repos:
@@ -27,6 +43,8 @@ repos:
     hooks:
       - id: black
         language_version: python3.12
+        args:
+          - --config=pyproject.toml
 
   # ======================================================
   # 📚 ISORT - IMPORT SORTER
@@ -35,10 +53,11 @@ repos:
     rev: 6.0.1
     hooks:
       - id: isort
-        args: ["--profile", "black"]
+        args:
+          - --settings-path=pyproject.toml
 
   # ======================================================
-  # 🔎 FLAKE8 - LINTER
+  # 🔎 FLAKE8 - PYTHON LINTER
   # ======================================================
   - repo: https://github.com/PyCQA/flake8
     rev: 7.3.0
@@ -47,6 +66,20 @@ repos:
         additional_dependencies:
           - flake8-bugbear
           - flake8-pyproject
+        args:
+          - --config=pyproject.toml
+
+  # ======================================================
+  # 🧪 PYTEST
+  # ======================================================
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
 
   # ======================================================
   # 🛠️ COMMON FILE FIXES
@@ -61,20 +94,16 @@ repos:
       # Ensure newline at EOF
       - id: end-of-file-fixer
 
+      # Normalize mixed line endings
+      - id: mixed-line-ending
+        args:
+          - --fix=lf
+
       # Validate YAML
       - id: check-yaml
 
       # Validate JSON
       - id: check-json
-
-      # Prevent large files
-      - id: check-added-large-files
-
-      # Detect merge conflicts
-      - id: check-merge-conflict
-
-      # Prevent debug statements
-      - id: debug-statements
 
       # Validate TOML
       - id: check-toml
@@ -82,6 +111,22 @@ repos:
       # Validate XML
       - id: check-xml
 
-      # Normalize line endings
-      - id: mixed-line-ending
-        args: ["--fix=lf"]
+      # Detect merge conflicts
+      - id: check-merge-conflict
+
+      # Detect debug statements
+      - id: debug-statements
+
+      # Prevent huge files
+      - id: check-added-large-files
+        args:
+          - --maxkb=2048
+
+      # Validate symlinks
+      - id: check-symlinks
+
+      # Prevent case conflicts
+      - id: check-case-conflict
+
+      # Prevent private keys
+      - id: detect-private-key
