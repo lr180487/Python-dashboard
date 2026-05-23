@@ -1,6 +1,6 @@
 # =========================================================
 # 🐍 PYPROJECT.TOML
-# Centralized configuration:
+# Centralized configuration for:
 # - Black
 # - isort
 # - Flake8
@@ -111,23 +111,37 @@ per-file-ignores = [
 # 🧪 PYTEST
 # =========================================================
 [tool.pytest.ini_options]
+
 minversion = "8.0"
 
-pythonpath = ["."]
-testpaths = ["tests"]
+pythonpath = [
+    ".",
+]
 
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
+testpaths = [
+    "tests",
+]
 
-addopts = """
--v
--ra
---tb=short
---strict-markers
---disable-warnings
---color=yes
-"""
+python_files = [
+    "test_*.py",
+]
+
+python_classes = [
+    "Test*",
+]
+
+python_functions = [
+    "test_*",
+]
+
+addopts = [
+    "-v",
+    "-ra",
+    "--tb=short",
+    "--strict-markers",
+    "--disable-warnings",
+    "--color=yes",
+]
 
 filterwarnings = [
     "ignore::DeprecationWarning",
@@ -143,25 +157,48 @@ markers = [
 # 📊 COVERAGE
 # =========================================================
 [tool.coverage.run]
+
 branch = true
 
-source = ["."]
+source = [
+    ".",
+]
+
 omit = [
     "tests/*",
     "venv/*",
     ".venv/*",
+    "alembic/versions/*",
+]
+
+# =========================================================
+# 📦 COVERAGE REPORT
+# =========================================================
+[tool.coverage.report]
+
+show_missing = true
+skip_covered = true
+precision = 2
+
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise NotImplementedError",
 ]
 
 # =========================================================
 # 📦 SETUPTOOLS
 # =========================================================
 [tool.setuptools]
+
 include-package-data = true
 
 # =========================================================
 # 🏗️ BUILD SYSTEM
 # =========================================================
 [build-system]
+
 requires = [
     "setuptools>=68",
     "wheel",
