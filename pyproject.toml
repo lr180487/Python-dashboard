@@ -122,12 +122,40 @@ per-file-ignores = [
 
 minversion = "8.0"
 
-# Ignorar completamente tests
-addopts = [
-    "--ignore=tests",
-    "--disable-warnings",
+testpaths = [
+    "tests",
 ]
 
+python_files = [
+    "test_*.py",
+]
+
+python_classes = [
+    "Test*",
+]
+
+python_functions = [
+    "test_*",
+]
+
+addopts = """
+-v
+-ra
+--tb=short
+--strict-markers
+--disable-warnings
+--color=yes
+"""
+
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+markers = [
+    "slow: slow tests",
+    "integration: integration tests",
+    "unit: unit tests",
+]
 # =========================================================
 # 📊 COVERAGE
 # =========================================================
