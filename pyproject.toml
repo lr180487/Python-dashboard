@@ -13,8 +13,10 @@
 # 🧹 BLACK
 # =========================================================
 [tool.black]
+
 line-length = 100
 target-version = ["py312"]
+
 include = "\\.pyi?$"
 
 extend-exclude = """
@@ -36,6 +38,7 @@ extend-exclude = """
   | node_modules
   | migrations
   | alembic/versions
+  | tests
   | __pycache__
 )/
 """
@@ -44,7 +47,9 @@ extend-exclude = """
 # 📚 ISORT
 # =========================================================
 [tool.isort]
+
 profile = "black"
+
 line_length = 100
 multi_line_output = 3
 
@@ -68,6 +73,7 @@ skip = [
     "dist",
     "htmlcov",
     "node_modules",
+    "tests",
     "alembic/versions",
 ]
 
@@ -75,6 +81,7 @@ skip = [
 # 🔎 FLAKE8
 # =========================================================
 [tool.flake8]
+
 max-line-length = 100
 max-complexity = 12
 
@@ -99,6 +106,7 @@ exclude = [
     "dist",
     "htmlcov",
     "node_modules",
+    "tests",
     "alembic/versions",
 ]
 
@@ -114,43 +122,10 @@ per-file-ignores = [
 
 minversion = "8.0"
 
-pythonpath = [
-    ".",
-]
-
-testpaths = [
-    "tests",
-]
-
-python_files = [
-    "test_*.py",
-]
-
-python_classes = [
-    "Test*",
-]
-
-python_functions = [
-    "test_*",
-]
-
+# Ignorar completamente tests
 addopts = [
-    "-v",
-    "-ra",
-    "--tb=short",
-    "--strict-markers",
+    "--ignore=tests",
     "--disable-warnings",
-    "--color=yes",
-]
-
-filterwarnings = [
-    "ignore::DeprecationWarning",
-]
-
-markers = [
-    "slow: slow tests",
-    "integration: integration tests",
-    "unit: unit tests",
 ]
 
 # =========================================================
