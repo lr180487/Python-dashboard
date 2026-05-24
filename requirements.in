@@ -1,11 +1,8 @@
-
 bcrypt
-
 pandas
 plotly
 python-dotenv
 pyyaml
-
 sqlalchemy
 streamlit
 streamlit-authenticator
