@@ -1,12 +1,11 @@
-auth_manager
+
 bcrypt
-crud
-models
+
 pandas
 plotly
 python-dotenv
 pyyaml
-session
+
 sqlalchemy
 streamlit
 streamlit-authenticator
