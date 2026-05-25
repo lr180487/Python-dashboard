@@ -12,10 +12,15 @@ default_stages:
 
 fail_fast: false
 
+# =========================================================
+# 🚫 GLOBAL EXCLUDES
+# =========================================================
 exclude: |
   (?x)^(
-      venv/|
+      \.git/|
+      \.github/|
       \.venv/|
+      venv/|
       env/|
       ENV/|
       build/|
@@ -30,8 +35,8 @@ exclude: |
       node_modules/|
       migrations/|
       alembic/versions/|
-      coverage.xml|
-      package-lock.json
+      coverage\.xml|
+      package-lock\.json
   )
 
 repos:
@@ -43,7 +48,10 @@ repos:
     rev: 25.1.0
     hooks:
       - id: black
+        name: black-format
         language_version: python3.12
+        args:
+          - --config=pyproject.toml
 
   # ======================================================
   # 📚 ISORT - IMPORT SORTER
@@ -52,6 +60,7 @@ repos:
     rev: 6.0.1
     hooks:
       - id: isort
+        name: isort-imports
         args:
           - --settings-path=pyproject.toml
 
@@ -62,9 +71,12 @@ repos:
     rev: 7.3.0
     hooks:
       - id: flake8
+        name: flake8-lint
         additional_dependencies:
           - flake8-bugbear
           - flake8-pyproject
+        args:
+          - --config=pyproject.toml
 
   # ======================================================
   # 🧪 PYTEST
@@ -86,45 +98,44 @@ repos:
     rev: v5.0.0
     hooks:
 
-      # Remove trailing whitespace
+      # --------------------------------------------------
+      # ✨ Formatting
+      # --------------------------------------------------
       - id: trailing-whitespace
 
-      # Ensure newline at EOF
       - id: end-of-file-fixer
 
-      # Normalize line endings
       - id: mixed-line-ending
         args:
           - --fix=lf
 
-      # Validate YAML
+      # --------------------------------------------------
+      # ✅ Validation
+      # --------------------------------------------------
       - id: check-yaml
 
-      # Validate JSON
       - id: check-json
 
-      # Validate TOML
       - id: check-toml
 
-      # Validate XML
       - id: check-xml
 
-      # Detect merge conflicts
+      # --------------------------------------------------
+      # 🔒 Safety Checks
+      # --------------------------------------------------
       - id: check-merge-conflict
 
-      # Detect debug statements
       - id: debug-statements
 
-      # Prevent large files
+      - id: detect-private-key
+
+      # --------------------------------------------------
+      # 📦 File Checks
+      # --------------------------------------------------
       - id: check-added-large-files
         args:
           - --maxkb=2048
 
-      # Validate symlinks
       - id: check-symlinks
 
-      # Prevent filename case conflicts
       - id: check-case-conflict
-
-      # Detect private keys
-      - id: detect-private-key
