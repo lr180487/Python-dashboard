@@ -108,7 +108,11 @@ class User(Base):
     # 🧾 REPRESENTATION
     # =====================================================
     def __repr__(self) -> str:
-        return f"User(id={self.id}, " f"username='{self.username}', " f"email='{self.email}')"
+        return (
+            f"User(id={self.id}, "
+            f"username='{self.username}', "
+            f"email='{self.email}')"
+        )
 
 
 # =========================================================
@@ -164,4 +168,8 @@ class Venta(Base):
     # 🧾 REPRESENTATION
     # =====================================================
     def __repr__(self) -> str:
-        return f"Venta(id={self.id}, " f"categoria='{self.categoria}', " f"fecha='{self.fecha}')"
+        return (
+            f"Venta(id={self.id}, "
+            f"categoria='{self.categoria}', "
+            f"fecha='{self.fecha}')"
+        )

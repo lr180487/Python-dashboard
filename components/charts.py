@@ -20,7 +20,9 @@ def render_pie_chart(df: pd.DataFrame) -> None:
 
 def render_line_chart(df: pd.DataFrame) -> None:
     """Render line chart: daily sales trend."""
-    ventas_diarias = df.groupby("Fecha")["Ventas"].sum().reset_index().sort_values("Fecha")
+    ventas_diarias = (
+        df.groupby("Fecha")["Ventas"].sum().reset_index().sort_values("Fecha")
+    )
     fig = px.line(
         ventas_diarias,
         x="Fecha",

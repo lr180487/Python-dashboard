@@ -16,7 +16,9 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
-_raw_url = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/dashboard")
+_raw_url = os.getenv(
+    "DATABASE_URL", "postgresql://user:password@localhost:5432/dashboard"
+)
 DATABASE_URL = _raw_url
 
 engine = None
