@@ -3,16 +3,15 @@
 PostgreSQL with SQLite fallback.
 """
 
-from contextlib import contextmanager
 import os
-from pathlib import Path
 import sys
+from contextlib import contextmanager, suppress
+from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
@@ -44,10 +43,8 @@ def _add_client_encoding_to_url(url: str) -> str:
 
 def _safe_print(msg: str) -> None:
     """Print to stdout with UTF-8 encoding (Windows safe)."""
-    try:
+    with suppress(Exception):
         sys.stdout.buffer.write(f"{msg}\n".encode("utf-8", errors="replace"))
-    except Exception:
-        pass
 
 
 def _create_engine_with_fallback() -> None:

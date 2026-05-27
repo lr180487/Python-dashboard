@@ -7,8 +7,7 @@ minimum_pre_commit_version: "4.0.0"
 default_language_version:
   python: python3.12
 
-default_stages:
-  - pre-commit
+default_stages: [pre-commit]
 
 fail_fast: false
 
@@ -33,109 +32,75 @@ exclude: |
       \.tox/|
       __pycache__/|
       node_modules/|
-      migrations/|
-      alembic/versions/|
       coverage\.xml|
       package-lock\.json
   )
 
+# =========================================================
+# 🔥 REPOSITORIES / HOOKS
+# =========================================================
 repos:
 
-  # ======================================================
-  # 🧹 BLACK - CODE FORMATTER
-  # ======================================================
+  # =======================================================
+  # ⚡ RUFF (LINTER + FORMATTER)
+  # =======================================================
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.13
+    hooks:
+
+      # Linter + auto-fix
+      - id: ruff
+        args:
+          - --fix
+          - --exit-non-zero-on-fix
+
+      # Formatter
+      - id: ruff-format
+
+  # =======================================================
+  # 🖤 BLACK
+  # =======================================================
   - repo: https://github.com/psf/black
     rev: 25.1.0
     hooks:
       - id: black
-        name: black-format
         language_version: python3.12
-        args:
-          - --config=pyproject.toml
 
-  # ======================================================
-  # 📚 ISORT - IMPORT SORTER
-  # ======================================================
-  - repo: https://github.com/PyCQA/isort
-    rev: 6.0.1
-    hooks:
-      - id: isort
-        name: isort-imports
-        args:
-          - --settings-path=pyproject.toml
-
-  # ======================================================
-  # 🔎 FLAKE8 - PYTHON LINTER
-  # ======================================================
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.3.0
-    hooks:
-      - id: flake8
-        name: flake8-lint
-        additional_dependencies:
-          - flake8-bugbear
-          - flake8-pyproject
-        args:
-          - --config=pyproject.toml
-
-  # ======================================================
-  # 🧪 PYTEST
-  # ======================================================
-  - repo: local
-    hooks:
-      - id: pytest
-        name: pytest
-        entry: pytest
-        language: system
-        pass_filenames: false
-        stages:
-          - pre-push
-
-  # ======================================================
-  # 🛠️ COMMON FILE FIXES
-  # ======================================================
+  # =======================================================
+  # 🧹 GENERIC FILE CHECKS
+  # =======================================================
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
 
-      # --------------------------------------------------
-      # ✨ Formatting
-      # --------------------------------------------------
+      # Remove trailing spaces
       - id: trailing-whitespace
 
+      # Final newline
       - id: end-of-file-fixer
 
+      # Normalize line endings
       - id: mixed-line-ending
-        args:
-          - --fix=lf
+        args: [--fix=lf]
 
-      # --------------------------------------------------
-      # ✅ Validation
-      # --------------------------------------------------
+      # Validate YAML
       - id: check-yaml
 
-      - id: check-json
-
+      # Validate TOML
       - id: check-toml
 
-      - id: check-xml
+      # Validate JSON
+      - id: check-json
 
-      # --------------------------------------------------
-      # 🔒 Safety Checks
-      # --------------------------------------------------
-      - id: check-merge-conflict
-
+      # Prevent debug leftovers
       - id: debug-statements
 
+      # Detect private keys
       - id: detect-private-key
 
-      # --------------------------------------------------
-      # 📦 File Checks
-      # --------------------------------------------------
+      # Detect merge conflicts
+      - id: check-merge-conflict
+
+      # Prevent giant files
       - id: check-added-large-files
-        args:
-          - --maxkb=2048
-
-      - id: check-symlinks
-
-      - id: check-case-conflict
+        args: ["--maxkb=2048"]

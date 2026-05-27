@@ -5,7 +5,6 @@
 # ======================================================
 import streamlit as st
 
-
 # ======================================================
 # CSS
 # ======================================================
@@ -57,18 +56,18 @@ FEATURES = [
         "icon": "📊",
         "title": "Dashboard Interactivo",
         "description": (
-            "Métricas clave y gráficos dinámicos " "filtrables por período y categoría."
+            "Métricas clave y gráficos dinámicos filtrables por período y categoría."
         ),
     },
     {
         "icon": "🔐",
         "title": "Autenticación Segura",
-        "description": ("Sistema de usuarios con registro " "y login seguro."),
+        "description": ("Sistema de usuarios con registro y login seguro."),
     },
     {
         "icon": "⚡",
         "title": "Tiempo Real",
-        "description": ("Visualizaciones rápidas " "y procesamiento instantáneo."),
+        "description": ("Visualizaciones rápidas y procesamiento instantáneo."),
     },
 ]
 
@@ -153,7 +152,7 @@ def render_features() -> None:
 
     cols = st.columns(3)
 
-    for col, feature in zip(cols, FEATURES):
+    for col, feature in zip(cols, FEATURES, strict=False):
         with col:
             render_feature_card(
                 feature["icon"],

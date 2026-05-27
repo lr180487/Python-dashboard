@@ -1,7 +1,6 @@
 import sqlite3
 import sys
 
-
 db_path = r"C:\Users\lreyn\CascadeProjects\python-dashboard\dashboard.db"
 try:
     c = sqlite3.connect(db_path)

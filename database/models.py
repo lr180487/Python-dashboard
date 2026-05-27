@@ -8,16 +8,8 @@ from datetime import datetime
 # =========================================================
 # 📦 SQLALCHEMY
 # =========================================================
-from sqlalchemy import (
-    Boolean,
-    Column,
-    DateTime,
-    Float,
-    Integer,
-    String,
-)
+from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String
 from sqlalchemy.orm import declarative_base
-
 
 # =========================================================
 # 🏗️ BASE MODEL
@@ -108,11 +100,7 @@ class User(Base):
     # 🧾 REPRESENTATION
     # =====================================================
     def __repr__(self) -> str:
-        return (
-            f"User(id={self.id}, "
-            f"username='{self.username}', "
-            f"email='{self.email}')"
-        )
+        return f"User(id={self.id}, username='{self.username}', email='{self.email}')"
 
 
 # =========================================================
@@ -169,7 +157,5 @@ class Venta(Base):
     # =====================================================
     def __repr__(self) -> str:
         return (
-            f"Venta(id={self.id}, "
-            f"categoria='{self.categoria}', "
-            f"fecha='{self.fecha}')"
+            f"Venta(id={self.id}, categoria='{self.categoria}', fecha='{self.fecha}')"
         )

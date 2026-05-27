@@ -1,0 +1,36 @@
+
+[flake8]
+max-line-length = 88
+max-complexity = 12
+
+statistics = True
+count = True
+show-source = True
+
+extend-ignore =
+    E203,
+    W503
+
+exclude =
+    .git,
+    .github,
+    .venv,
+    venv,
+    env,
+    ENV,
+    __pycache__,
+    .pytest_cache,
+    .mypy_cache,
+    .ruff_cache,
+    .tox,
+    build,
+    dist,
+    htmlcov,
+    node_modules,
+    site-packages,
+    migrations,
+    alembic/versions
+
+per-file-ignores =
+    __init__.py:F401
+    alembic/env.py:E402

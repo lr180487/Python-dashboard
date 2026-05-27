@@ -1,56 +1,46 @@
+
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "python-dashboard"
+version = "0.1.0"
+description = "Modern Python Dashboard"
+requires-python = ">=3.12"
+
 [tool.black]
 line-length = 88
 target-version = ["py312"]
-include = "\\.pyi?$"
-# Exclude common directories and files
-extend-exclude = "(\\.git|\\.github|\\.venv|venv|env|ENV|__pycache__|\\.pytest_cache|\\.mypy_cache|\\.ruff_cache|\\.tox|build|dist|htmlcov|node_modules|migrations|alembic/versions|site-packages)"
 
-[tool.isort]
-profile = "black"
-py_version = 312
-line_length = 88
-multi_line_output = 3
-include_trailing_comma = true
-use_parentheses = true
-ensure_newline_before_comments = true
-force_sort_within_sections = true
-lines_after_imports = 2
-src_paths = ["."]
-skip = [
-    ".git",
-    ".github",
-    ".venv",
-    "venv",
-    "env",
-    "ENV",
-    "__pycache__",
-    ".pytest_cache",
-    ".mypy_cache",
-    ".ruff_cache",
-    ".tox",
-    "build",
-    "dist",
-    "htmlcov",
-    "node_modules",
-    "site-packages",
-    "migrations",
-    "alembic/versions"
-]
+include = '\.pyi?$'
 
-[tool.flake8]
-max-line-length = 88
-max-complexity = 12
-statistics = true
-count = true
-show-source = true
-extend-ignore = [
-    "E203",
-    "W503"
-]
+extend-exclude = '''
+/(
+    \.git
+  | \.github
+  | \.venv
+  | venv
+  | env
+  | ENV
+  | __pycache__
+  | \.pytest_cache
+  | \.mypy_cache
+  | \.ruff_cache
+  | \.tox
+  | build
+  | dist
+  | htmlcov
+  | node_modules
+  | migrations
+  | alembic/versions
+  | site-packages
+)/'''
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
 exclude = [
     ".git",
     ".github",
@@ -69,47 +59,87 @@ exclude = [
     "node_modules",
     "site-packages",
     "migrations",
-    "alembic/versions"
+    "alembic/versions",
 ]
-per-file-ignores = [
-    "__init__.py:F401",
-    "alembic/env.py:E402"
+
+[tool.ruff.lint]
+
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "B",   # bugbear
+    "UP",  # pyupgrade
+    "SIM", # simplify
+    "C4",  # comprehensions
+    "PIE", # misc lints
+    "RET", # return rules
+    "RUF", # Ruff-specific
 ]
+
+ignore = [
+    "E203",
+]
+
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
 
 [tool.pytest.ini_options]
 minversion = "8.0"
+
 testpaths = ["tests"]
+
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "-v -ra --tb=short --strict-markers --disable-warnings --color=yes"
-filterwarnings = ["ignore::DeprecationWarning"]
+
+addopts = """
+-v
+-ra
+--tb=short
+--strict-markers
+--disable-warnings
+--color=yes
+"""
+
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
 markers = [
     "slow: slow tests",
     "integration: integration tests",
-    "unit: unit tests"
+    "unit: unit tests",
 ]
 
 [tool.coverage.run]
 branch = true
+
 source = ["."]
+
 omit = [
     "tests/*",
     "venv/*",
     ".venv/*",
     "*/site-packages/*",
-    "alembic/versions/*"
+    "alembic/versions/*",
 ]
 
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
 precision = 2
+
 exclude_lines = [
     "pragma: no cover",
     "if __name__ == .__main__.:",
     "pass",
-    "raise NotImplementedError"
+    "raise NotImplementedError",
 ]
 
 [tool.setuptools]

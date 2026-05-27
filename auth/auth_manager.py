@@ -11,12 +11,8 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-from database.crud import (
-    create_user,
-    update_user_password,
-)
+from database.crud import create_user, update_user_password
 from database.session import db_session
-
 
 # =========================================================
 # 📁 CONFIG
@@ -36,7 +32,7 @@ def load_config() -> dict:
     Load YAML authentication config.
     """
 
-    with open(CONFIG_PATH, "r", encoding="utf-8") as file:
+    with open(CONFIG_PATH, encoding="utf-8") as file:
         return yaml.load(file, Loader=SafeLoader)
 
 
@@ -212,7 +208,7 @@ def render_register(
             password=password,
         )
 
-        st.success("User registered successfully. " "You can now log in.")
+        st.success("User registered successfully. You can now log in.")
 
     except Exception as error:
         st.error(f"Registration error: {error}")

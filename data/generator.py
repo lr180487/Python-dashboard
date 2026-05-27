@@ -1,7 +1,7 @@
 """Sample sales data generator."""
 
-from datetime import datetime, timedelta
 import random
+from datetime import datetime, timedelta
 
 import pandas as pd
 import streamlit as st
