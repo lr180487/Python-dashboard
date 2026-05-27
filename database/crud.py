@@ -1,19 +1,17 @@
 """Database CRUD operations."""
 
-from typing import List, Optional
-
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from .models import User, Venta
 
 
-def get_user_by_username(db: Session, username: str) -> Optional[User]:
+def get_user_by_username(db: Session, username: str) -> User | None:
     """Get user by username."""
     return db.query(User).filter(User.username == username).first()
 
 
-def get_user_by_email(db: Session, email: str) -> Optional[User]:
+def get_user_by_email(db: Session, email: str) -> User | None:
     """Get user by email."""
     return db.query(User).filter(User.email == email).first()
 
@@ -40,7 +38,7 @@ def create_user(
     return user
 
 
-def update_user_password(db: Session, username: str, password_hash: str) -> Optional[User]:
+def update_user_password(db: Session, username: str, password_hash: str) -> User | None:
     """Update user password."""
     user = get_user_by_username(db, username)
     if user:
@@ -50,7 +48,7 @@ def update_user_password(db: Session, username: str, password_hash: str) -> Opti
     return user
 
 
-def get_all_users(db: Session) -> List[User]:
+def get_all_users(db: Session) -> list[User]:
     """Get all users."""
     return db.query(User).all()
 
@@ -77,17 +75,17 @@ def create_venta(
     return venta
 
 
-def get_ventas(db: Session, skip: int = 0, limit: int = 100) -> List[Venta]:
+def get_ventas(db: Session, skip: int = 0, limit: int = 100) -> list[Venta]:
     """Get sales with pagination."""
     return db.query(Venta).offset(skip).limit(limit).all()
 
 
-def get_ventas_por_categoria(db: Session, categoria: str) -> List[Venta]:
+def get_ventas_por_categoria(db: Session, categoria: str) -> list[Venta]:
     """Get sales by category."""
     return db.query(Venta).filter(Venta.categoria == categoria).all()
 
 
-def get_resumen_ventas(db: Session) -> List:
+def get_resumen_ventas(db: Session) -> list:
     """Get sales summary by category."""
     return (
         db.query(

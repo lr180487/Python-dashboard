@@ -4,13 +4,7 @@
 # IMPORTS
 # ======================================================
 import streamlit as st
-
-from auth.auth_manager import (
-    get_authenticator,
-    render_forgot_password,
-    render_register,
-)
-
+from auth.auth_manager import get_authenticator, render_forgot_password, render_register
 
 # ======================================================
 # CONSTANTS
@@ -105,16 +99,16 @@ def render_auth_status() -> None:
         render_success_state()
 
     elif authentication_status is False:
-        st.error("❌ Usuario o contraseña incorrectos")
+        st.error(" Usuario o contraseña incorrectos")
 
     elif authentication_status is None:
-        st.info("ℹ️ Ingresa tus credenciales para continuar")
+        st.info("Ingresa tus credenciales para continuar")
 
 
 def render_success_state() -> None:
     """Render successful authentication state."""
 
-    st.success("✅ Inicio de sesión exitoso")
+    st.success(" Inicio de sesión exitoso")
 
     st.balloons()
 
@@ -136,8 +130,8 @@ def render_auth_tabs(
 
     tab_register, tab_forgot = st.tabs(
         [
-            "📝 Registrarse",
-            "🔑 Recuperar Contraseña",
+            " Registrarse",
+            " Recuperar Contraseña",
         ]
     )
 

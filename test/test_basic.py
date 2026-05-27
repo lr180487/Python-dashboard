@@ -22,7 +22,7 @@ def test_import_app():
 
         assert True
     except Exception as error:
-        raise AssertionError(f"Import failed: {error}")
+        raise AssertionError(f"Import failed: {error}") from error
 
 
 def test_database_module():
@@ -32,4 +32,4 @@ def test_database_module():
 
         assert True
     except Exception as error:
-        raise AssertionError(f"Database import failed: {error}")
+        raise AssertionError(f"Database import failed: {error}") from error

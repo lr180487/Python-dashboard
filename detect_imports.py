@@ -8,8 +8,8 @@ basado en imports reales (top-level).
 
 import ast
 import os
+from contextlib import suppress
 from pathlib import Path
-
 
 # Mapeo de módulos → paquetes pip (puedes ampliarlo)
 IMPORT_TO_PACKAGE = {
@@ -46,7 +46,7 @@ STDLIB = {
 
 def extract_imports(file_path):
     """Extrae imports de un archivo Python usando AST."""
-    with open(file_path, "r", encoding="utf-8") as f:
+    with open(file_path, encoding="utf-8") as f:
         tree = ast.parse(f.read(), filename=file_path)
 
     imports = set()
@@ -56,10 +56,8 @@ def extract_imports(file_path):
             for alias in node.names:
                 imports.add(alias.name.split(".")[0])
 
-        elif isinstance(node, ast.ImportFrom):
-            if node.module:
-                imports.add(node.module.split(".")[0])
-
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            imports.add(node.module.split(".")[0])
     return imports
 
 
@@ -84,11 +82,8 @@ def scan_project(directory):
         for file in files:
             if file.endswith(".py"):
                 path = os.path.join(root, file)
-                try:
+                with suppress(Exception):
                     all_imports.update(extract_imports(path))
-                except Exception:
-                    pass  # ignora archivos problemáticos
-
     return all_imports
 
 

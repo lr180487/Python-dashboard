@@ -1,49 +1,17 @@
-# Entornos virtuales
 venv/
-.env
-
-# Base de datos local
-*.db
-dashboard.db
-
-# Alembic (migraciones manejadas por DB, no por imagen)
-alembic/
-alembic.ini
-
-# Node
-node_modules/
-package*.json
-
-# Git
-.git/
-.gitignore
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Python cache
+.venv/
 __pycache__/
-*.py[cod]
-*$py.class
-*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.git/
+.github/
+.env
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+node_modules/
 dist/
 build/
-
-# Logs y temp
-*.log
-*.tmp
-*.bak
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Archivos de prueba
-sandbox.py
-check_db.py
-
-# Documentación no necesaria en runtime
-README.md

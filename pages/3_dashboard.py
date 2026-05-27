@@ -3,14 +3,12 @@
 from datetime import datetime
 
 import streamlit as st
-
 from auth.auth_manager import get_authenticator
 from components.charts import render_charts
 from components.metrics import render_metrics
 from data.generator import generar_datos
 from utils.config import CATEGORIAS, PERIODOS, DashboardConfig
 from utils.filters import filtrar_por_categoria, filtrar_por_periodo
-
 
 # ── Guardia de seguridad ──
 if not st.session_state.get("authentication_status"):

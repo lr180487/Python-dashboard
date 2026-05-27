@@ -3,10 +3,10 @@
 # ======================================================
 # STANDARD LIBRARY
 # ======================================================
-from logging.config import fileConfig
 import os
-from pathlib import Path
 import sys
+from logging.config import fileConfig
+from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from dotenv import load_dotenv
@@ -16,7 +16,6 @@ from sqlalchemy import create_engine, pool
 # THIRD-PARTY IMPORTS
 # ======================================================
 from alembic import context
-
 
 # ======================================================
 # LOCAL IMPORTS
@@ -31,7 +30,6 @@ load_dotenv(BASE_DIR / ".env")
 
 # Importar modelos para autogenerate
 from database.models import Base  # noqa: E402
-
 
 # ======================================================
 # ALEMBIC CONFIG
