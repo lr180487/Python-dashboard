@@ -1,6 +1,11 @@
-
+# =========================================================
+# 🏗️ BUILD SYSTEM
+# =========================================================
 [build-system]
-requires = ["setuptools>=70", "wheel"]
+requires = [
+    "setuptools>=70",
+    "wheel",
+]
 build-backend = "setuptools.build_meta"
 
 # =========================================================
@@ -9,7 +14,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "python-dashboard"
 version = "0.1.0"
-description = "Modern Streamlit Python Dashboard"
+description = "Modern Streamlit Dashboard with Authentication and Analytics"
 readme = "README.md"
 requires-python = ">=3.12"
 
@@ -17,7 +22,19 @@ authors = [
     { name = "Luiggi Reyna" }
 ]
 
-dependencies = []
+keywords = [
+    "python",
+    "streamlit",
+    "dashboard",
+    "analytics",
+    "postgresql",
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
 
 # =========================================================
 # 🖤 BLACK
@@ -31,14 +48,18 @@ include = '\.pyi?$'
 extend-exclude = '''
 /(
     \.git
+  | \.github
   | \.venv
   | venv
   | env
+  | ENV
   | build
   | dist
+  | htmlcov
   | node_modules
   | migrations
   | alembic/versions
+  | site-packages
 )/
 '''
 
@@ -58,13 +79,26 @@ ensure_newline_before_comments = true
 
 skip = [
     ".git",
+    ".github",
     ".venv",
     "venv",
+    "env",
+    "ENV",
     "build",
     "dist",
+    "htmlcov",
     "node_modules",
     "migrations",
     "alembic/versions",
+]
+
+known_first_party = [
+    "auth",
+    "components",
+    "database",
+    "data",
+    "pages",
+    "utils",
 ]
 
 # =========================================================
@@ -80,37 +114,58 @@ exclude = [
     ".venv",
     "venv",
     "env",
-    "build",
-    "dist",
+    "ENV",
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
     ".ruff_cache",
+    ".tox",
+    "build",
+    "dist",
+    "htmlcov",
     "node_modules",
     "migrations",
     "alembic/versions",
 ]
 
 # =========================================================
-# 🔎 RUFF LINT RULES
+# 🔎 RUFF LINT
 # =========================================================
 [tool.ruff.lint]
 
 select = [
-    "E",    # pycodestyle
-    "F",    # pyflakes
-    "W",    # warnings
-    "I",    # isort
-    "UP",   # pyupgrade
-    "B",    # bugbear
-    "SIM",  # simplify
-    "C4",   # comprehensions
-    "RET",  # returns
-    "RUF",  # ruff-specific
+    # pycodestyle
+    "E",
+    "W",
+
+    # pyflakes
+    "F",
+
+    # isort
+    "I",
+
+    # pyupgrade
+    "UP",
+
+    # bugbear
+    "B",
+
+    # simplify
+    "SIM",
+
+    # comprehensions
+    "C4",
+
+    # return rules
+    "RET",
+
+    # Ruff-specific
+    "RUF",
 ]
 
 ignore = [
-    "E203", # black compatibility
+    # Black compatibility
+    "E203",
 ]
 
 fixable = ["ALL"]
@@ -122,6 +177,7 @@ fixable = ["ALL"]
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
+docstring-code-format = true
 
 # =========================================================
 # 🧪 PYTEST
@@ -146,7 +202,14 @@ python_functions = [
     "test_*",
 ]
 
-addopts = "-v -ra --tb=short --strict-markers --disable-warnings --color=yes"
+addopts = """
+-v
+-ra
+--tb=short
+--strict-markers
+--disable-warnings
+--color=yes
+"""
 
 filterwarnings = [
     "ignore::DeprecationWarning",
@@ -168,6 +231,7 @@ source = [
     "auth",
     "components",
     "database",
+    "data",
     "pages",
     "utils",
 ]
@@ -201,3 +265,45 @@ exclude_lines = [
 # =========================================================
 [tool.setuptools]
 include-package-data = true
+
+# =========================================================
+# 📁 PACKAGE DISCOVERY
+# =========================================================
+[tool.setuptools.packages.find]
+exclude = [
+    "tests",
+    "tests.*",
+    "venv",
+    ".venv",
+]
+
+# =========================================================
+# 🔥 OPTIONAL: MYPY
+# =========================================================
+[tool.mypy]
+python_version = "3.12"
+
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+
+exclude = [
+    "venv/",
+    ".venv/",
+    "build/",
+    "dist/",
+]
+
+# =========================================================
+# 🧹 OPTIONAL: BANDIT
+# =========================================================
+[tool.bandit]
+exclude_dirs = [
+    "tests",
+    "venv",
+    ".venv",
+]
+
+skips = [
+    "B101",
+]
