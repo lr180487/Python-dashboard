@@ -4,7 +4,6 @@
 # IMPORTS
 # ======================================================
 import streamlit as st
-
 from auth.auth_manager import get_authenticator, render_forgot_password, render_register
 
 # ======================================================
