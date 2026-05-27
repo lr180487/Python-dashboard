@@ -1,6 +1,7 @@
 """Componente de métricas principales."""
 
 import pandas as pd
+
 import streamlit as st
 
 

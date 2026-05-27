@@ -6,11 +6,11 @@ import os
 from pathlib import Path
 
 import bcrypt
-import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+import streamlit as st
 from database.crud import create_user, update_user_password
 from database.session import db_session
 

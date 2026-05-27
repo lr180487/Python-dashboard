@@ -4,8 +4,8 @@ import random
 from datetime import datetime, timedelta
 
 import pandas as pd
-import streamlit as st
 
+import streamlit as st
 from utils.config import CATEGORIAS
 
 

@@ -16,11 +16,12 @@ Flujo:
 # =========================================================
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # =========================================================
 # 🌎 THIRD-PARTY IMPORTS
 # =========================================================
 import streamlit as st
-from dotenv import load_dotenv
 
 # =========================================================
 # 📂 LOCAL IMPORTS

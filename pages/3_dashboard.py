@@ -3,7 +3,6 @@
 from datetime import datetime
 
 import streamlit as st
-
 from auth.auth_manager import get_authenticator
 from components.charts import render_charts
 from components.metrics import render_metrics
